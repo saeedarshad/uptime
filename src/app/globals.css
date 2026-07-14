@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background-color: #f4f4f0;
+  color: #242b33;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-safety text-white hover:bg-safety/90;
+  }
+  .btn-dark {
+    @apply btn bg-graphite text-white hover:bg-graphite/90;
+  }
+  .btn-secondary {
+    @apply btn border border-graphite/20 bg-white text-graphite hover:bg-graphite/5;
+  }
+  .btn-ghost {
+    @apply btn text-graphite/70 hover:bg-graphite/5 hover:text-graphite;
+  }
+  .btn-danger {
+    @apply btn bg-danger text-white hover:bg-danger/90;
+  }
+  .card {
+    @apply rounded-lg border border-graphite/10 bg-white shadow-sm;
+  }
+  .input {
+    @apply w-full rounded-md border border-graphite/20 bg-white px-3 py-2 text-sm text-graphite placeholder:text-graphite/40 focus:border-safety focus:outline-none focus:ring-1 focus:ring-safety;
+  }
+  .label {
+    @apply mb-1 block text-sm font-medium text-graphite/80;
+  }
+}
+
+/* Print styles for QR label sheets. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+  }
+}

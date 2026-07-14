@@ -1,0 +1,16 @@
+{
+  "name": "uptimehq",
+  "description": "Equipment maintenance tracking for small businesses.",
+  "healthchecks": {
+    "web": [
+      {
+        "type": "startup",
+        "name": "web healthcheck",
+        "path": "/api/health",
+        "attempts": 10,
+        "initialDelay": 5,
+        "timeout": 10
+      }
+    ]
+  }
+}
