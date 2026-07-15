@@ -63,16 +63,12 @@ export default async function WorkOrdersPage({
         action={<LinkButton href="/work-orders/new">New work order</LinkButton>}
       />
 
-      <div className="mb-4 flex flex-wrap items-center gap-2">
+      <div className="mb-5 flex flex-wrap items-center gap-2">
         {STATUS_FILTERS.map((f) => (
           <Link
             key={f.key}
             href={qs({ status: f.key === "all" ? undefined : f.key })}
-            className={`rounded-full px-3 py-1.5 text-sm font-medium ${
-              status === f.key
-                ? "bg-graphite text-white"
-                : "bg-white text-graphite/70 hover:bg-graphite/5"
-            }`}
+            className={`pill ${status === f.key ? "pill-active" : ""}`}
           >
             {f.label}
           </Link>
@@ -80,7 +76,7 @@ export default async function WorkOrdersPage({
         {assetId && (
           <Link
             href={qs({ asset: undefined })}
-            className="ml-2 text-xs font-medium text-safety"
+            className="ml-1 inline-flex items-center gap-1 text-xs font-semibold text-safety hover:underline"
           >
             Clear asset filter ✕
           </Link>
@@ -100,25 +96,22 @@ export default async function WorkOrdersPage({
       ) : (
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="data-table">
               <thead>
-                <tr className="border-b border-graphite/10 bg-graphite/[0.03] text-left text-xs uppercase tracking-wide text-graphite/50">
-                  <th className="px-4 py-3 font-semibold">WO</th>
-                  <th className="px-4 py-3 font-semibold">Issue</th>
-                  <th className="px-4 py-3 font-semibold">Asset</th>
-                  <th className="px-4 py-3 font-semibold">Status</th>
-                  <th className="px-4 py-3 font-semibold">Priority</th>
-                  <th className="px-4 py-3 font-semibold">Opened</th>
-                  <th className="px-4 py-3 text-right font-semibold">Cost</th>
+                <tr>
+                  <th>WO</th>
+                  <th>Issue</th>
+                  <th>Asset</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Opened</th>
+                  <th className="text-right">Cost</th>
                 </tr>
               </thead>
               <tbody>
                 {workOrders.map((wo) => (
-                  <tr
-                    key={wo.id}
-                    className="border-b border-graphite/5 last:border-0 hover:bg-graphite/[0.02]"
-                  >
-                    <td className="px-4 py-3">
+                  <tr key={wo.id}>
+                    <td>
                       <Link
                         href={`/work-orders/${wo.id}`}
                         className="font-semibold text-graphite hover:text-safety"
@@ -126,24 +119,26 @@ export default async function WorkOrdersPage({
                         {formatWoNumber(wo.number)}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-graphite">{wo.title}</td>
-                    <td className="px-4 py-3 text-graphite/70">
-                      {wo.asset.name}
-                    </td>
-                    <td className="px-4 py-3">
+                    <td className="font-medium text-graphite">{wo.title}</td>
+                    <td className="text-graphite/70">{wo.asset.name}</td>
+                    <td>
                       <StatusChip kind="wo" status={wo.status} />
                     </td>
-                    <td className="px-4 py-3">
+                    <td>
                       {wo.priority === "high" ? (
-                        <Badge tone="danger">high</Badge>
+                        <Badge tone="danger" dot>
+                          high
+                        </Badge>
                       ) : (
-                        <span className="text-graphite/60">{wo.priority}</span>
+                        <span className="capitalize text-graphite/60">
+                          {wo.priority}
+                        </span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-graphite/60">
+                    <td className="text-graphite/60">
                       {formatDate(wo.openedAt, org.timezone)}
                     </td>
-                    <td className="px-4 py-3 text-right font-medium tabular-nums">
+                    <td className="text-right font-semibold tabular-nums text-graphite">
                       {formatMoney(wo.partsCostCents + wo.laborCostCents)}
                     </td>
                   </tr>

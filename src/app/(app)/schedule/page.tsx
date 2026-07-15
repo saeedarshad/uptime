@@ -93,8 +93,17 @@ function Group({
   if (tasks.length === 0) return null;
   return (
     <section>
-      <div className="mb-3 flex items-center gap-2">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-graphite/60">
+      <div className="mb-3 flex items-center gap-2.5">
+        <span
+          className={`h-2 w-2 rounded-full ${
+            tone === "danger"
+              ? "bg-danger"
+              : tone === "warn"
+                ? "bg-warn"
+                : "bg-graphite/40"
+          }`}
+        />
+        <h2 className="text-sm font-bold uppercase tracking-wider text-graphite/70">
           {title}
         </h2>
         <Badge tone={tone}>{tasks.length}</Badge>
@@ -112,10 +121,10 @@ function Group({
           return (
             <div
               key={t.id}
-              className="card flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"
+              className="card flex flex-col gap-3 p-4 transition-shadow hover:shadow-card-hover sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
-                <div className="font-medium text-graphite">
+                <div className="font-semibold text-graphite">
                   {t.schedule.taskName}
                 </div>
                 <div className="mt-0.5 text-sm text-graphite/60">

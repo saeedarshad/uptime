@@ -34,9 +34,13 @@ function Section({
 }) {
   return (
     <div className="card p-6">
-      <h2 className="text-base font-semibold text-graphite">{title}</h2>
-      {desc && <p className="mb-4 mt-1 text-sm text-graphite/60">{desc}</p>}
-      <div className={desc ? "" : "mt-4"}>{children}</div>
+      <div className="mb-5 border-b border-graphite/[0.06] pb-4">
+        <h2 className="text-base font-bold text-graphite">{title}</h2>
+        {desc && (
+          <p className="mt-1 text-sm leading-relaxed text-graphite/60">{desc}</p>
+        )}
+      </div>
+      <div>{children}</div>
     </div>
   );
 }

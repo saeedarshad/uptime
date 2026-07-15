@@ -1,6 +1,6 @@
 import { requireAuth } from "@/lib/auth";
 import { Sidebar, MobileTabs } from "@/components/Nav";
-import { logoutAction } from "./actions";
+import { UserMenu } from "@/components/UserMenu";
 
 export default async function AppLayout({
   children,
@@ -10,36 +10,42 @@ export default async function AppLayout({
   const { user, org } = await requireAuth();
 
   return (
-    <div className="flex min-h-screen bg-paper">
-      <Sidebar orgName={org.name} userName={user.name} userRole={user.role} />
+    <div className="flex min-h-screen">
+      <Sidebar />
       <div className="flex min-h-screen flex-1 flex-col">
-        {/* Top bar */}
-        <header className="flex items-center justify-between border-b border-graphite/10 bg-white px-4 py-3 md:px-8">
-          <div className="flex items-center gap-2 md:hidden">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-safety text-xs font-bold text-white">
+        {/* Top bar — sticky, frosted. */}
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-graphite/[0.08] bg-white/80 px-4 py-2.5 backdrop-blur-md md:px-8">
+          <div className="flex items-center gap-2.5 md:hidden">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-safety to-safety/80 text-xs font-black text-white ring-1 ring-white/20">
               U
             </div>
             <span className="font-bold text-graphite">UptimeHQ</span>
           </div>
-          <div className="hidden text-sm font-semibold text-graphite md:block">
-            {org.name}
+          <div className="hidden items-center gap-2.5 md:flex">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-graphite/[0.06] text-xs font-bold text-graphite/70">
+              {org.name.slice(0, 1).toUpperCase()}
+            </span>
+            <span className="text-sm font-semibold text-graphite">
+              {org.name}
+            </span>
           </div>
           <div className="flex items-center gap-3">
             {org.plan === "trial" && org.trialEndsAt && (
-              <span className="hidden rounded-full bg-warn/10 px-2.5 py-0.5 text-xs font-semibold text-warn sm:inline">
+              <span className="hidden items-center gap-1.5 rounded-full bg-warn/10 px-2.5 py-1 text-xs font-semibold text-warn ring-1 ring-inset ring-warn/20 sm:inline-flex">
+                <span className="h-1.5 w-1.5 rounded-full bg-warn" />
                 Trial
               </span>
             )}
-            <form action={logoutAction} className="md:hidden">
-              <button className="text-xs font-medium text-graphite/60">
-                Sign out
-              </button>
-            </form>
+            <UserMenu
+              userName={user.name}
+              userEmail={user.email}
+              userRole={user.role}
+            />
           </div>
         </header>
 
-        <main className="flex-1 px-4 py-6 pb-24 md:px-8 md:pb-8">
-          <div className="mx-auto max-w-6xl">{children}</div>
+        <main className="flex-1 px-4 py-7 pb-24 md:px-8 md:py-9 md:pb-9">
+          <div className="mx-auto max-w-6xl animate-fade-in-up">{children}</div>
         </main>
       </div>
       <MobileTabs />

@@ -4,17 +4,30 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-4 py-10">
-      <div className="w-full max-w-md">
-        <div className="mb-6 flex items-center justify-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-safety text-lg font-bold text-white">
-            U
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
+      {/* Ambient brand glow behind the card. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-safety/10 blur-3xl"
+      />
+      <div className="relative w-full max-w-md">
+        <div className="mb-7 flex flex-col items-center text-center">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-safety to-safety/80 text-xl font-black text-white shadow-card ring-1 ring-white/20">
+              U
+            </div>
+            <span className="text-2xl font-bold tracking-tight text-graphite">
+              UptimeHQ
+            </span>
           </div>
-          <span className="text-xl font-bold tracking-tight text-graphite">
-            UptimeHQ
-          </span>
+          <p className="mt-3 text-sm text-graphite/55">
+            Equipment maintenance, minus the spreadsheets.
+          </p>
         </div>
         {children}
+        <p className="mt-6 text-center text-xs text-graphite/40">
+          Unlimited users · No per-seat pricing · Cancel anytime
+        </p>
       </div>
     </div>
   );

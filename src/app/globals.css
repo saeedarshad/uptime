@@ -8,38 +8,97 @@
 
 html,
 body {
-  background-color: #f4f4f0;
   color: #242b33;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Clean, warm paper background. Section-level glows (hero, auth) provide
+   visual interest without muddying every surface. */
+body {
+  background-color: #f5f5f1;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.01em;
+  }
+  ::selection {
+    background: rgba(225, 98, 47, 0.2);
+  }
+  /* Consistent, on-brand focus ring for keyboard users everywhere.
+     The ring follows each element's own border-radius. */
+  *:focus-visible {
+    outline: 2px solid rgba(225, 98, 47, 0.7);
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-3.5 py-2 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold leading-none transition-all duration-150 active:translate-y-px disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-primary {
-    @apply btn bg-safety text-white hover:bg-safety/90;
+    @apply btn bg-safety text-white shadow-sm ring-1 ring-inset ring-white/10 hover:bg-safety/90 hover:shadow-card-hover;
   }
   .btn-dark {
-    @apply btn bg-graphite text-white hover:bg-graphite/90;
+    @apply btn bg-graphite text-white shadow-sm ring-1 ring-inset ring-white/10 hover:bg-night hover:shadow-card-hover;
   }
   .btn-secondary {
-    @apply btn border border-graphite/20 bg-white text-graphite hover:bg-graphite/5;
+    @apply btn border border-graphite/15 bg-white text-graphite shadow-sm hover:border-graphite/25 hover:bg-graphite/[0.03];
   }
   .btn-ghost {
     @apply btn text-graphite/70 hover:bg-graphite/5 hover:text-graphite;
   }
   .btn-danger {
-    @apply btn bg-danger text-white hover:bg-danger/90;
+    @apply btn bg-danger text-white shadow-sm ring-1 ring-inset ring-white/10 hover:bg-danger/90 hover:shadow-card-hover;
   }
+
   .card {
-    @apply rounded-lg border border-graphite/10 bg-white shadow-sm;
+    @apply rounded-xl border border-graphite/[0.08] bg-white shadow-card;
   }
+  /* Cards that are themselves links / clickable. */
+  .card-interactive {
+    @apply card transition-all duration-200 hover:-translate-y-0.5 hover:border-graphite/[0.12] hover:shadow-card-hover;
+  }
+
   .input {
-    @apply w-full rounded-md border border-graphite/20 bg-white px-3 py-2 text-sm text-graphite placeholder:text-graphite/40 focus:border-safety focus:outline-none focus:ring-1 focus:ring-safety;
+    @apply w-full rounded-lg border border-graphite/20 bg-white px-3.5 py-2.5 text-sm text-graphite shadow-sm transition-shadow placeholder:text-graphite/40 focus:border-safety focus:outline-none focus:ring-2 focus:ring-safety/25;
   }
   .label {
-    @apply mb-1 block text-sm font-medium text-graphite/80;
+    @apply mb-1.5 block text-sm font-semibold text-graphite/80;
+  }
+
+  /* Small uppercase section/eyebrow label used above cards & groups. */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-wider text-graphite/50;
+  }
+
+  /* Filter / segmented pills (work-orders status filter, etc.). */
+  .pill {
+    @apply inline-flex items-center rounded-full border border-graphite/10 bg-white px-3.5 py-1.5 text-sm font-medium text-graphite/70 shadow-sm transition-colors hover:border-graphite/20 hover:text-graphite;
+  }
+  .pill-active {
+    @apply border-transparent bg-graphite text-white shadow-sm hover:text-white;
+  }
+
+  /* Shared data-table skin. Wrap a <table> with .data-table. */
+  .data-table {
+    @apply w-full text-sm;
+  }
+  .data-table thead tr {
+    @apply border-b border-graphite/10 bg-graphite/[0.03] text-left text-xs uppercase tracking-wider text-graphite/50;
+  }
+  .data-table th {
+    @apply px-4 py-3 font-semibold;
+  }
+  .data-table tbody tr {
+    @apply border-b border-graphite/[0.06] transition-colors last:border-0 hover:bg-safety/[0.03];
+  }
+  .data-table td {
+    @apply px-4 py-3.5;
   }
 }
 
@@ -50,5 +109,6 @@ body {
   }
   body {
     background: white !important;
+    background-image: none !important;
   }
 }

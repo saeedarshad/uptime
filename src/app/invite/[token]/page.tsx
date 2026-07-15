@@ -14,20 +14,24 @@ export default async function InvitePage({
   if (!invite) notFound();
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-paper px-4 py-10">
-      <div className="w-full max-w-md">
-        <div className="mb-6 flex items-center justify-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-safety text-lg font-bold text-white">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[36rem] -translate-x-1/2 rounded-full bg-safety/10 blur-3xl"
+      />
+      <div className="relative w-full max-w-md">
+        <div className="mb-7 flex items-center justify-center gap-2.5">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-safety to-safety/80 text-xl font-black text-white shadow-card ring-1 ring-white/20">
             U
           </div>
-          <span className="text-xl font-bold tracking-tight text-graphite">
+          <span className="text-2xl font-bold tracking-tight text-graphite">
             UptimeHQ
           </span>
         </div>
-        <div className="card p-6">
+        <div className="card p-7 sm:p-8">
           {invite.acceptedAt ? (
             <div className="text-center">
-              <h1 className="text-lg font-bold text-graphite">
+              <h1 className="text-xl font-bold tracking-tight text-graphite">
                 Invite already used
               </h1>
               <p className="mt-2 text-sm text-graphite/60">
@@ -36,10 +40,10 @@ export default async function InvitePage({
             </div>
           ) : (
             <>
-              <h1 className="mb-1 text-lg font-bold text-graphite">
+              <h1 className="text-xl font-bold tracking-tight text-graphite">
                 Join {invite.org.name}
               </h1>
-              <p className="mb-5 text-sm text-graphite/60">
+              <p className="mb-6 mt-1 text-sm text-graphite/60">
                 You&apos;ve been invited as <strong>{invite.name}</strong> (
                 {invite.role}). Set a password to get started.
               </p>

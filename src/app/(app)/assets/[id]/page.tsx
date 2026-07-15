@@ -91,15 +91,15 @@ export default async function AssetDetailPage({
       </div>
 
       {/* Tabs */}
-      <div className="mb-4 flex flex-wrap gap-1 border-b border-graphite/10">
+      <div className="mb-5 flex flex-wrap gap-1 border-b border-graphite/[0.08]">
         {TABS.map((t) => (
           <Link
             key={t.key}
             href={`/assets/${asset.id}?tab=${t.key}`}
-            className={`border-b-2 px-3 py-2 text-sm font-medium ${
+            className={`-mb-px border-b-2 px-3.5 py-2.5 text-sm font-semibold transition-colors ${
               tab === t.key
                 ? "border-safety text-graphite"
-                : "border-transparent text-graphite/50 hover:text-graphite"
+                : "border-transparent text-graphite/50 hover:border-graphite/20 hover:text-graphite"
             }`}
           >
             {t.label}
@@ -348,10 +348,10 @@ async function MeterTab({ assetId, tz }: { assetId: string; tz: string }) {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="card p-4">
-      <div className="text-xs uppercase tracking-wide text-graphite/50">
+      <div className="text-[11px] font-medium uppercase tracking-wide text-graphite/50">
         {label}
       </div>
-      <div className="mt-1 text-xl font-bold tabular-nums text-graphite">
+      <div className="mt-1.5 text-xl font-bold tabular-nums tracking-tight text-graphite">
         {value}
       </div>
     </div>

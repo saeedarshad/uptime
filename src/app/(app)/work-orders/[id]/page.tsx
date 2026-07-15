@@ -91,9 +91,7 @@ export default async function WorkOrderDetailPage({
 
           <div className="card space-y-3 p-5">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-graphite/50">
-                Photos
-              </h2>
+              <h2 className="eyebrow">Photos</h2>
             </div>
             {wo.photos.length > 0 ? (
               <div className="flex flex-wrap gap-2">
@@ -118,14 +116,20 @@ export default async function WorkOrderDetailPage({
         </div>
 
         <div className="space-y-6">
-          <div className="card space-y-3 p-5 text-sm">
-            <Row label="Total cost" value={formatMoney(totalCost)} strong />
-            <Row label="Parts" value={formatMoney(wo.partsCostCents)} />
-            <Row label="Labor" value={formatMoney(wo.laborCostCents)} />
-            <Row
-              label="Downtime"
-              value={formatHours(Number(wo.downtimeHours))}
-            />
+          <div className="card overflow-hidden text-sm">
+            <div className="border-b border-graphite/[0.08] bg-graphite/[0.03] px-5 py-4">
+              <div className="eyebrow">Total cost</div>
+              <div className="mt-1 text-2xl font-bold tabular-nums tracking-tight text-graphite">
+                {formatMoney(totalCost)}
+              </div>
+            </div>
+            <div className="space-y-3 p-5">
+              <Row label="Parts" value={formatMoney(wo.partsCostCents)} />
+              <Row label="Labor" value={formatMoney(wo.laborCostCents)} />
+              <Row
+                label="Downtime"
+                value={formatHours(Number(wo.downtimeHours))}
+              />
             <Row label="Reported by" value={wo.reportedByName} />
             <Row
               label="Assigned to"
@@ -142,6 +146,7 @@ export default async function WorkOrderDetailPage({
                 value={formatDateTime(wo.closedAt, org.timezone)}
               />
             )}
+            </div>
           </div>
 
           <ClosePanel

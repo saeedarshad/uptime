@@ -42,21 +42,28 @@ export default async function SettingsPage() {
         <ChipsForm chips={org.symptomChips} />
 
         <div className="card p-6">
-          <h2 className="text-base font-semibold text-graphite">Team</h2>
-          <p className="mb-4 mt-1 text-sm text-graphite/60">
-            Unlimited users on every plan. Invite by email — they set a password
-            from the link, no verification hoops.
-          </p>
+          <div className="mb-5 border-b border-graphite/[0.06] pb-4">
+            <h2 className="text-base font-bold text-graphite">Team</h2>
+            <p className="mt-1 text-sm leading-relaxed text-graphite/60">
+              Unlimited users on every plan. Invite by email — they set a
+              password from the link, no verification hoops.
+            </p>
+          </div>
 
-          <div className="mb-6 divide-y divide-graphite/5">
+          <div className="mb-6 divide-y divide-graphite/[0.06]">
             {users.map((u) => (
               <div
                 key={u.id}
-                className="flex items-center justify-between py-2.5 text-sm"
+                className="flex items-center justify-between py-3 text-sm"
               >
-                <div>
-                  <span className="font-medium text-graphite">{u.name}</span>
-                  <span className="ml-2 text-graphite/50">{u.email}</span>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-graphite/[0.06] text-[11px] font-bold text-graphite/60">
+                    {u.name.slice(0, 1).toUpperCase()}
+                  </span>
+                  <div>
+                    <div className="font-semibold text-graphite">{u.name}</div>
+                    <div className="text-xs text-graphite/50">{u.email}</div>
+                  </div>
                 </div>
                 <Badge tone={u.role === "tech" ? "muted" : "info"}>
                   {u.role}

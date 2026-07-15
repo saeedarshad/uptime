@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { logoutAction } from "@/app/(app)/actions";
 
 interface NavItem {
   href: string;
@@ -54,53 +53,91 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function Sidebar({
-  orgName,
-  userName,
-  userRole,
-}: {
-  orgName: string;
-  userName: string;
-  userRole: string;
-}) {
+function BrandMark({ size = "md" }: { size?: "sm" | "md" }) {
+  const box = size === "sm" ? "h-7 w-7 text-xs" : "h-9 w-9 text-base";
+  return (
+    <div
+      className={`flex ${box} items-center justify-center rounded-lg bg-gradient-to-br from-safety to-safety/80 font-black text-white shadow-sm ring-1 ring-white/20`}
+    >
+      U
+    </div>
+  );
+}
+
+export function Sidebar() {
   const pathname = usePathname();
   return (
-    <aside className="hidden w-60 shrink-0 flex-col border-r border-graphite/10 bg-graphite text-white md:flex">
-      <div className="flex items-center gap-2 px-5 py-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-md bg-safety text-sm font-bold">
-          U
+    <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-black/20 bg-gradient-to-b from-night to-ink text-white md:flex">
+      <div className="flex items-center gap-2.5 px-5 py-[1.05rem]">
+        <BrandMark />
+        <div className="leading-tight">
+          <div className="text-lg font-bold tracking-tight">UptimeHQ</div>
+          <div className="text-[11px] font-medium text-white/40">
+            Maintenance OS
+          </div>
         </div>
-        <span className="text-lg font-bold tracking-tight">UptimeHQ</span>
       </div>
-      <nav className="flex-1 space-y-1 px-3">
+
+      <div className="px-5">
+        <div className="h-px bg-white/10" />
+      </div>
+
+      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
+        <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white/30">
+          Menu
+        </div>
         {ITEMS.map((item) => {
           const active = isActive(pathname, item.href);
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+              aria-current={active ? "page" : undefined}
+              className={`group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 ${
                 active
-                  ? "bg-safety text-white"
-                  : "text-white/70 hover:bg-white/10 hover:text-white"
+                  ? "bg-white/[0.08] text-white shadow-inner-line"
+                  : "text-white/60 hover:bg-white/[0.05] hover:text-white"
               }`}
             >
-              {item.icon}
+              {active && (
+                <span className="absolute inset-y-1.5 left-0 w-1 rounded-r-full bg-safety" />
+              )}
+              <span
+                className={
+                  active
+                    ? "text-safety"
+                    : "text-white/50 transition-colors group-hover:text-white/80"
+                }
+              >
+                {item.icon}
+              </span>
               {item.label}
             </Link>
           );
         })}
       </nav>
-      <div className="border-t border-white/10 px-4 py-4">
-        <div className="mb-2 text-sm font-medium">{userName}</div>
-        <div className="mb-3 text-xs capitalize text-white/50">
-          {userRole} · {orgName}
+
+      <div className="p-4">
+        <div className="rounded-xl border border-white/10 bg-white/[0.04] p-3.5">
+          <div className="flex items-center gap-2 text-sm font-semibold text-white">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.8}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4 text-safety"
+              aria-hidden
+            >
+              <path d="M12 16v-4m0-4h.01M12 22a10 10 0 100-20 10 10 0 000 20z" />
+            </svg>
+            Need a hand?
+          </div>
+          <p className="mt-1 text-xs leading-relaxed text-white/50">
+            Techs scan the QR label to report issues — no login needed.
+          </p>
         </div>
-        <form action={logoutAction}>
-          <button className="text-xs font-medium text-white/70 hover:text-white">
-            Sign out
-          </button>
-        </form>
       </div>
     </aside>
   );
@@ -109,17 +146,21 @@ export function Sidebar({
 export function MobileTabs() {
   const pathname = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-graphite/10 bg-white md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-graphite/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 md:hidden">
       {MOBILE_ITEMS.map((item) => {
         const active = isActive(pathname, item.href);
         return (
           <Link
             key={item.href}
             href={item.href}
-            className={`flex flex-1 flex-col items-center gap-0.5 py-2 text-[10px] font-medium ${
-              active ? "text-safety" : "text-graphite/50"
+            aria-current={active ? "page" : undefined}
+            className={`relative flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[10px] font-semibold transition-colors ${
+              active ? "text-safety" : "text-graphite/45"
             }`}
           >
+            {active && (
+              <span className="absolute inset-x-4 top-0 h-0.5 rounded-full bg-safety" />
+            )}
             {item.icon}
             {item.label}
           </Link>

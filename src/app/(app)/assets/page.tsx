@@ -50,55 +50,44 @@ export default async function AssetsPage() {
       ) : (
         <div className="card overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="data-table">
               <thead>
-                <tr className="border-b border-graphite/10 bg-graphite/[0.03] text-left text-xs uppercase tracking-wide text-graphite/50">
-                  <th className="px-4 py-3 font-semibold">Asset</th>
-                  <th className="px-4 py-3 font-semibold">Status</th>
-                  <th className="px-4 py-3 font-semibold">Category</th>
-                  <th className="px-4 py-3 font-semibold">Location</th>
-                  <th className="px-4 py-3 text-right font-semibold">
-                    Cost (90d)
-                  </th>
-                  <th className="px-4 py-3 text-right font-semibold">
-                    Downtime (90d)
-                  </th>
+                <tr>
+                  <th>Asset</th>
+                  <th>Status</th>
+                  <th>Category</th>
+                  <th>Location</th>
+                  <th className="text-right">Cost (90d)</th>
+                  <th className="text-right">Downtime (90d)</th>
                 </tr>
               </thead>
               <tbody>
                 {assets.map((a) => {
                   const m = metrics.get(a.id) ?? EMPTY_METRIC;
                   return (
-                    <tr
-                      key={a.id}
-                      className="border-b border-graphite/5 last:border-0 hover:bg-graphite/[0.02]"
-                    >
-                      <td className="px-4 py-3">
+                    <tr key={a.id}>
+                      <td>
                         <Link
                           href={`/assets/${a.id}`}
-                          className="font-medium text-graphite hover:text-safety"
+                          className="font-semibold text-graphite hover:text-safety"
                         >
                           {a.name}
                         </Link>
                         {a.isComplianceTracked && (
-                          <span className="ml-2 rounded bg-safety/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-safety">
+                          <span className="ml-2 rounded-full bg-safety/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-safety ring-1 ring-inset ring-safety/20">
                             Compliance
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3">
+                      <td>
                         <StatusChip kind="asset" status={a.status} />
                       </td>
-                      <td className="px-4 py-3 text-graphite/70">
-                        {a.category ?? "—"}
-                      </td>
-                      <td className="px-4 py-3 text-graphite/70">
-                        {a.location ?? "—"}
-                      </td>
-                      <td className="px-4 py-3 text-right font-medium tabular-nums">
+                      <td className="text-graphite/70">{a.category ?? "—"}</td>
+                      <td className="text-graphite/70">{a.location ?? "—"}</td>
+                      <td className="text-right font-semibold tabular-nums text-graphite">
                         {m.costCents > 0 ? formatMoney(m.costCents) : "—"}
                       </td>
-                      <td className="px-4 py-3 text-right tabular-nums">
+                      <td className="text-right tabular-nums text-graphite/80">
                         {m.downtimeHours > 0
                           ? formatHours(m.downtimeHours)
                           : "—"}

@@ -73,8 +73,8 @@ export default async function PublicAssetPage({
   return (
     <div>
       {AssetHeader}
-      <div className="card mb-4 p-4 text-center text-sm text-graphite/70">
-        Last serviced:{" "}
+      <div className="card mb-5 flex items-center justify-between p-4 text-sm">
+        <span className="text-graphite/60">Last serviced</span>
         <span className="font-semibold text-graphite">
           {serviced ? formatDate(serviced, asset.org.timezone) : "No record yet"}
         </span>
@@ -82,15 +82,41 @@ export default async function PublicAssetPage({
       <div className="space-y-3">
         <Link
           href={`/a/${params.publicId}/report`}
-          className="btn-primary w-full py-4 text-base"
+          className="group flex w-full items-center gap-4 rounded-xl bg-safety p-4 text-left text-white shadow-card ring-1 ring-inset ring-white/10 transition-all active:translate-y-px"
         >
-          Report a problem
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/15">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden>
+              <path d="M12 9v4m0 4h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z" />
+            </svg>
+          </span>
+          <span className="flex-1">
+            <span className="block text-base font-bold">Report a problem</span>
+            <span className="block text-sm text-white/75">
+              Something broken or not right
+            </span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-white/60 transition-transform group-active:translate-x-0.5" aria-hidden>
+            <path d="M9 6l6 6-6 6" />
+          </svg>
         </Link>
         <Link
           href={`/a/${params.publicId}/meter`}
-          className="btn-secondary w-full py-4 text-base"
+          className="group flex w-full items-center gap-4 rounded-xl border border-graphite/15 bg-white p-4 text-left text-graphite shadow-card transition-all active:translate-y-px"
         >
-          Log meter reading
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-graphite/[0.06] text-graphite/70">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden>
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+          <span className="flex-1">
+            <span className="block text-base font-bold">Log meter reading</span>
+            <span className="block text-sm text-graphite/55">
+              Hours, mileage, or cycles
+            </span>
+          </span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-graphite/30 transition-transform group-active:translate-x-0.5" aria-hidden>
+            <path d="M9 6l6 6-6 6" />
+          </svg>
         </Link>
       </div>
     </div>
