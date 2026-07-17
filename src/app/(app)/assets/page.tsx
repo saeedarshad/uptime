@@ -4,6 +4,7 @@ import { tenantDb } from "@/lib/tenant";
 import { assetMetrics, EMPTY_METRIC } from "@/lib/metrics";
 import { formatMoney, formatHours } from "@/lib/format";
 import { PageHeader, StatusChip, EmptyState, LinkButton } from "@/components/ui";
+import { ActionMenu } from "@/components/ActionMenu";
 
 export default async function AssetsPage() {
   const { org } = await requireAuth();
@@ -23,13 +24,23 @@ export default async function AssetsPage() {
         subtitle={`${assets.length} active`}
         action={
           <>
-            <LinkButton href="/assets/import" variant="secondary">
-              Import CSV
-            </LinkButton>
-            <LinkButton href="/assets/labels" variant="secondary">
-              Print labels
-            </LinkButton>
             <LinkButton href="/assets/new">Add asset</LinkButton>
+            <ActionMenu
+              label="More"
+              items={[
+                {
+                  label: "Import CSV",
+                  href: "/assets/import",
+                  iconPath: "M12 3v12m0 0l-4-4m4 4l4-4M5 21h14",
+                },
+                {
+                  label: "Print labels",
+                  href: "/assets/labels",
+                  iconPath:
+                    "M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-4a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 01-2 2h-2M6 14h12v7H6z",
+                },
+              ]}
+            />
           </>
         }
       />

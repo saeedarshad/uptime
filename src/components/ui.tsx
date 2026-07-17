@@ -84,16 +84,19 @@ export function PageHeader({
   title,
   subtitle,
   eyebrow,
+  breadcrumbs,
   action,
 }: {
   title: string;
   subtitle?: string;
   eyebrow?: string;
+  breadcrumbs?: { label: string; href: string }[];
   action?: ReactNode;
 }) {
   return (
     <div className="mb-7 flex flex-wrap items-start justify-between gap-4 border-b border-content/[0.08] pb-5">
       <div className="min-w-0">
+        {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         {eyebrow && <div className="eyebrow mb-1.5">{eyebrow}</div>}
         <h1 className="text-2xl font-bold tracking-tight text-content">
           {title}
@@ -106,6 +109,39 @@ export function PageHeader({
         <div className="flex flex-shrink-0 items-center gap-2">{action}</div>
       )}
     </div>
+  );
+}
+
+/** Compact breadcrumb trail shown above a detail-page title. The current page
+ *  is the `title` itself, so callers pass only the ancestors. */
+function Breadcrumbs({ items }: { items: { label: string; href: string }[] }) {
+  return (
+    <nav aria-label="Breadcrumb" className="mb-2">
+      <ol className="flex flex-wrap items-center gap-1.5 text-xs font-medium text-content/50">
+        {items.map((item) => (
+          <li key={item.href} className="flex items-center gap-1.5">
+            <Link
+              href={item.href}
+              className="transition-colors hover:text-safety"
+            >
+              {item.label}
+            </Link>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-3 w-3 text-content/30"
+              aria-hidden
+            >
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }
 

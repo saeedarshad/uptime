@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireAuth } from "@/lib/auth";
+import { tenantDb } from "@/lib/tenant";
 import {
   dashboardStats,
   costByAsset,
@@ -8,7 +9,8 @@ import {
   topInsight,
 } from "@/lib/analytics";
 import { formatMoney, formatHours, formatDate } from "@/lib/format";
-import { PageHeader, SectionTitle, StatCard } from "@/components/ui";
+import { PageHeader, SectionTitle, StatCard, LinkButton } from "@/components/ui";
+import { GettingStarted, type OnboardingStep } from "@/components/GettingStarted";
 import {
   CostByAssetChart,
   MonthlySpendChart,
@@ -44,20 +46,64 @@ const STAT_ICONS = {
 
 export default async function DashboardPage() {
   const { org, user } = await requireAuth();
-  const [stats, costs, monthly, activity, insight] = await Promise.all([
-    dashboardStats(org.id),
-    costByAsset(org.id),
-    monthlySpend(org.id),
-    recentActivity(org.id),
-    topInsight(org.id),
-  ]);
+  const td = tenantDb(org.id);
+  const [stats, costs, monthly, activity, insight, assetCount, woCount, userCount, inviteCount] =
+    await Promise.all([
+      dashboardStats(org.id),
+      costByAsset(org.id),
+      monthlySpend(org.id),
+      recentActivity(org.id),
+      topInsight(org.id),
+      td.asset.count(),
+      td.workOrder.count(),
+      td.user.count(),
+      td.invite.count({ where: { acceptedAt: null } }),
+    ]);
+
+  const onboarding: OnboardingStep[] = [
+    {
+      label: "Add your first asset",
+      hint: "The equipment you want to track — lifts, machines, HVAC.",
+      href: "/assets/new",
+      done: assetCount > 0,
+    },
+    {
+      label: "Print & post QR labels",
+      hint: "Techs scan a label to report problems — no login needed.",
+      href: "/assets/labels",
+      done: assetCount > 0 && woCount > 0,
+    },
+    {
+      label: "Invite your team",
+      hint: "Unlimited users on every plan.",
+      href: "/settings",
+      done: userCount > 1 || inviteCount > 0,
+    },
+    {
+      label: "Log your first work order",
+      hint: "Record a repair to start tracking cost and downtime.",
+      href: "/work-orders/new",
+      done: woCount > 0,
+    },
+  ];
+  const setupComplete = onboarding.every((s) => s.done);
 
   return (
     <div>
       <PageHeader
         title={`Welcome back, ${user.name.split(" ")[0]}`}
         subtitle={`${org.name} · trailing 90 days`}
+        action={
+          <>
+            <LinkButton href="/work-orders/new">New work order</LinkButton>
+            <LinkButton href="/assets/new" variant="secondary">
+              Add asset
+            </LinkButton>
+          </>
+        }
       />
+
+      {!setupComplete && <GettingStarted steps={onboarding} />}
 
       {insight &&
         (() => {
@@ -118,6 +164,7 @@ export default async function DashboardPage() {
           value={formatHours(stats.downtimeHours90d)}
           iconPath={STAT_ICONS.downtime}
           tone="graphite"
+          href="/work-orders"
         />
         <StatCard
           label="Maintenance spend"
@@ -136,6 +183,7 @@ export default async function DashboardPage() {
           }
           iconPath={STAT_ICONS.compliance}
           tone="ok"
+          href="/schedule"
         />
         <StatCard
           label="Open work orders"

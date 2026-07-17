@@ -10,6 +10,7 @@ export default async function NewAssetPage() {
     <div className="mx-auto max-w-2xl">
       <PageHeader
         title="Add asset"
+        breadcrumbs={[{ label: "Assets", href: "/assets" }]}
         action={
           <Link href="/assets" className="btn-ghost">
             Cancel

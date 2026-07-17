@@ -47,12 +47,7 @@ export default async function WorkOrderDetailPage({
     <div>
       <PageHeader
         title={`${formatWoNumber(wo.number)} · ${wo.title}`}
-        subtitle={undefined}
-        action={
-          <Link href="/work-orders" className="btn-ghost">
-            All work orders
-          </Link>
-        }
+        breadcrumbs={[{ label: "Work orders", href: "/work-orders" }]}
       />
 
       <div className="mb-6 flex flex-wrap items-center gap-3 text-sm">

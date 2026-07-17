@@ -23,6 +23,10 @@ export default async function EditAssetPage({
     <div className="mx-auto max-w-2xl">
       <PageHeader
         title={`Edit ${asset.name}`}
+        breadcrumbs={[
+          { label: "Assets", href: "/assets" },
+          { label: asset.name, href: `/assets/${asset.id}` },
+        ]}
         action={
           <Link href={`/assets/${asset.id}`} className="btn-ghost">
             Cancel
