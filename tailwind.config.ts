@@ -1,20 +1,33 @@
 import type { Config } from "tailwindcss";
 
+/** Alpha-safe channel token: `rgb(var(--x) / <alpha-value>)` keeps `/60`
+ *  opacity utilities working while letting the value swap per theme. */
+const token = (name: string) => `rgb(var(--${name}) / <alpha-value>)`;
+
 const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
+        // --- Semantic, theme-aware tokens (light ⇄ dark via CSS vars) ---
+        // Neutrals + brand accents remap under `.dark` in globals.css.
+        canvas: token("canvas"), // page background
+        surface: token("surface"), // card / panel background
+        "surface-2": token("surface-2"), // subtle raised (table headers, chips)
+        content: token("content"), // primary text; alpha (/60, /[0.08]) = muted / hairline
+        safety: token("safety"),
+        ok: token("ok"),
+        danger: token("danger"),
+        warn: token("warn"),
+
+        // --- Fixed dark-surface brand shades (identical in both themes) ---
+        // Used for the sidebar, dark buttons, avatars — always dark.
         graphite: "#242B33",
-        paper: "#F4F4F0",
-        safety: "#E1622F",
-        ok: "#2E7D5B",
-        danger: "#BE4432",
-        warn: "#B07C1F",
-        // Deeper graphite shades for the navigation / dark surfaces.
         ink: "#12161B",
         night: "#1A2027",
-        // Warm neutral used at the edges of the paper background.
+        // Warm neutrals retained for print / legacy surfaces.
+        paper: "#F4F4F0",
         fog: "#E9E9E1",
       },
       fontFamily: {

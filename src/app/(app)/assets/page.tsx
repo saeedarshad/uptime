@@ -69,7 +69,7 @@ export default async function AssetsPage() {
                       <td>
                         <Link
                           href={`/assets/${a.id}`}
-                          className="font-semibold text-graphite hover:text-safety"
+                          className="font-semibold text-content hover:text-safety"
                         >
                           {a.name}
                         </Link>
@@ -82,12 +82,12 @@ export default async function AssetsPage() {
                       <td>
                         <StatusChip kind="asset" status={a.status} />
                       </td>
-                      <td className="text-graphite/70">{a.category ?? "—"}</td>
-                      <td className="text-graphite/70">{a.location ?? "—"}</td>
-                      <td className="text-right font-semibold tabular-nums text-graphite">
+                      <td className="text-content/70">{a.category ?? "—"}</td>
+                      <td className="text-content/70">{a.location ?? "—"}</td>
+                      <td className="text-right font-semibold tabular-nums text-content">
                         {m.costCents > 0 ? formatMoney(m.costCents) : "—"}
                       </td>
-                      <td className="text-right tabular-nums text-graphite/80">
+                      <td className="text-right tabular-nums text-content/80">
                         {m.downtimeHours > 0
                           ? formatHours(m.downtimeHours)
                           : "—"}

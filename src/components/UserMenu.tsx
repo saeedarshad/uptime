@@ -45,12 +45,13 @@ export function UserMenu({
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-full border border-graphite/10 bg-white py-1 pl-1 pr-2.5 shadow-sm transition-colors hover:border-graphite/20 hover:bg-graphite/[0.02]"
+        aria-label={`Account menu for ${userName}`}
+        className="flex items-center gap-2 rounded-full border border-content/10 bg-surface py-1 pl-1 pr-2.5 shadow-sm transition-colors hover:border-content/20 hover:bg-content/[0.02]"
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-graphite to-night text-[11px] font-bold text-white">
           {initials(userName)}
         </span>
-        <span className="hidden text-sm font-semibold text-graphite sm:block">
+        <span className="hidden text-sm font-semibold text-content sm:block">
           {userName.split(" ")[0]}
         </span>
         <svg
@@ -60,7 +61,7 @@ export function UserMenu({
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
-          className={`h-4 w-4 text-graphite/40 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`h-4 w-4 text-content/40 transition-transform ${open ? "rotate-180" : ""}`}
           aria-hidden
         >
           <path d="M6 9l6 6 6-6" />
@@ -70,32 +71,32 @@ export function UserMenu({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-60 origin-top-right animate-fade-in-up overflow-hidden rounded-xl border border-graphite/[0.08] bg-white shadow-elevated"
+          className="absolute right-0 top-full z-50 mt-2 w-60 origin-top-right animate-fade-in-up overflow-hidden rounded-xl border border-content/[0.08] bg-surface shadow-elevated"
         >
-          <div className="flex items-center gap-3 border-b border-graphite/[0.06] px-4 py-3.5">
+          <div className="flex items-center gap-3 border-b border-content/[0.06] px-4 py-3.5">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-graphite to-night text-xs font-bold text-white">
               {initials(userName)}
             </span>
             <div className="min-w-0">
-              <div className="truncate text-sm font-semibold text-graphite">
+              <div className="truncate text-sm font-semibold text-content">
                 {userName}
               </div>
-              <div className="truncate text-xs text-graphite/50">
+              <div className="truncate text-xs text-content/50">
                 {userEmail}
               </div>
             </div>
           </div>
           <div className="px-4 py-2.5">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-graphite/[0.06] px-2.5 py-0.5 text-xs font-semibold capitalize text-graphite/70">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-content/[0.06] px-2.5 py-0.5 text-xs font-semibold capitalize text-content/70">
               {userRole}
             </span>
           </div>
-          <div className="border-t border-graphite/[0.06] p-1.5">
+          <div className="border-t border-content/[0.06] p-1.5">
             <form action={logoutAction}>
               <button
                 type="submit"
                 role="menuitem"
-                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-medium text-graphite/80 transition-colors hover:bg-danger/[0.06] hover:text-danger"
+                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-medium text-content/80 transition-colors hover:bg-danger/[0.06] hover:text-danger"
               >
                 <svg
                   viewBox="0 0 24 24"

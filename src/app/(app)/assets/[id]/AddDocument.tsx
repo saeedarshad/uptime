@@ -30,7 +30,7 @@ export function AddDocument({
       action={formAction}
       className="card space-y-3 p-4 text-sm"
     >
-      <h3 className="font-semibold text-graphite">Add a document</h3>
+      <h3 className="font-semibold text-content">Add a document</h3>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <input
           name="title"

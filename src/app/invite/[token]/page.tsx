@@ -24,26 +24,26 @@ export default async function InvitePage({
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-safety to-safety/80 text-xl font-black text-white shadow-card ring-1 ring-white/20">
             U
           </div>
-          <span className="text-2xl font-bold tracking-tight text-graphite">
+          <span className="text-2xl font-bold tracking-tight text-content">
             UptimeHQ
           </span>
         </div>
         <div className="card p-7 sm:p-8">
           {invite.acceptedAt ? (
             <div className="text-center">
-              <h1 className="text-xl font-bold tracking-tight text-graphite">
+              <h1 className="text-xl font-bold tracking-tight text-content">
                 Invite already used
               </h1>
-              <p className="mt-2 text-sm text-graphite/60">
+              <p className="mt-2 text-sm text-content/60">
                 This invite has already been accepted. Try signing in instead.
               </p>
             </div>
           ) : (
             <>
-              <h1 className="text-xl font-bold tracking-tight text-graphite">
+              <h1 className="text-xl font-bold tracking-tight text-content">
                 Join {invite.org.name}
               </h1>
-              <p className="mb-6 mt-1 text-sm text-graphite/60">
+              <p className="mb-6 mt-1 text-sm text-content/60">
                 You&apos;ve been invited as <strong>{invite.name}</strong> (
                 {invite.role}). Set a password to get started.
               </p>

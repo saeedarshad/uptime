@@ -31,7 +31,7 @@ export function LogDoneForm({
       </summary>
       <form
         action={formAction}
-        className="mt-3 space-y-2 rounded-md border border-graphite/10 bg-graphite/[0.02] p-3"
+        className="mt-3 space-y-2 rounded-md border border-content/10 bg-content/[0.02] p-3"
       >
         <input type="hidden" name="taskId" value={taskId} />
         <input type="hidden" name="taskName" value={taskName} />

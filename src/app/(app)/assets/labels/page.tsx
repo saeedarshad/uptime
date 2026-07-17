@@ -26,10 +26,10 @@ export default async function LabelSheetPage() {
     <div>
       <div className="no-print mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-graphite">
+          <h1 className="text-2xl font-bold tracking-tight text-content">
             QR labels
           </h1>
-          <p className="mt-1 text-sm text-graphite/60">
+          <p className="mt-1 text-sm text-content/60">
             2&quot;×2&quot; labels. Print, peel, and stick one on each machine.
           </p>
         </div>

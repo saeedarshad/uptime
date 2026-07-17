@@ -100,10 +100,10 @@ function Group({
               ? "bg-danger"
               : tone === "warn"
                 ? "bg-warn"
-                : "bg-graphite/40"
+                : "bg-content/40"
           }`}
         />
-        <h2 className="text-sm font-bold uppercase tracking-wider text-graphite/70">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-content/70">
           {title}
         </h2>
         <Badge tone={tone}>{tasks.length}</Badge>
@@ -124,10 +124,10 @@ function Group({
               className="card flex flex-col gap-3 p-4 transition-shadow hover:shadow-card-hover sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
-                <div className="font-semibold text-graphite">
+                <div className="font-semibold text-content">
                   {t.schedule.taskName}
                 </div>
-                <div className="mt-0.5 text-sm text-graphite/60">
+                <div className="mt-0.5 text-sm text-content/60">
                   <Link
                     href={`/assets/${t.schedule.asset.id}`}
                     className="hover:text-safety"

@@ -12,8 +12,8 @@ export function PinForm({ publicId }: { publicId: string }) {
   return (
     <form action={formAction} className="card space-y-4 p-6">
       <div>
-        <h2 className="text-lg font-bold text-graphite">Enter shop PIN</h2>
-        <p className="mt-1 text-sm text-graphite/60">
+        <h2 className="text-lg font-bold text-content">Enter shop PIN</h2>
+        <p className="mt-1 text-sm text-content/60">
           Ask your manager for today&apos;s PIN. You&apos;ll only enter it once
           per shift.
         </p>

@@ -2,21 +2,54 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Semantic color tokens as space-separated RGB channels so Tailwind's
+   `rgb(var(--x) / <alpha-value>)` opacity utilities keep working. Light is the
+   default; `.dark` remaps the same names. Warm brand identity is preserved in
+   both themes. */
 :root {
   color-scheme: light;
+
+  --canvas: 245 245 241; /* #F5F5F1 warm paper */
+  --surface: 255 255 255;
+  --surface-2: 244 244 239; /* subtle warm raised */
+  --content: 36 43 51; /* #242B33 graphite ink */
+
+  --safety: 225 98 47; /* #E1622F */
+  --ok: 46 125 91; /* #2E7D5B */
+  --warn: 176 124 31; /* #B07C1F */
+  --danger: 190 68 50; /* #BE4432 */
+
+  --ring: 225 98 47;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --canvas: 23 24 27; /* #17181B warm near-black */
+  --surface: 31 33 37; /* #1F2125 raised card */
+  --surface-2: 39 42 46; /* #272A2E */
+  --content: 237 235 231; /* #EDEBE7 warm off-white */
+
+  /* Accents brightened for legibility on dark surfaces. */
+  --safety: 240 130 84; /* #F08254 */
+  --ok: 76 179 136; /* #4CB388 */
+  --warn: 216 168 78; /* #D8A84E */
+  --danger: 227 114 98; /* #E37262 */
+
+  --ring: 240 130 84;
 }
 
 html,
 body {
-  color: #242b33;
+  color: rgb(var(--content));
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Clean, warm paper background. Section-level glows (hero, auth) provide
-   visual interest without muddying every surface. */
+/* Clean, warm background. Section-level glows (hero, auth) provide visual
+   interest without muddying every surface. */
 body {
-  background-color: #f5f5f1;
+  background-color: rgb(var(--canvas));
 }
 
 @layer base {
@@ -26,12 +59,12 @@ body {
     letter-spacing: -0.01em;
   }
   ::selection {
-    background: rgba(225, 98, 47, 0.2);
+    background: rgb(var(--safety) / 0.2);
   }
   /* Consistent, on-brand focus ring for keyboard users everywhere.
      The ring follows each element's own border-radius. */
   *:focus-visible {
-    outline: 2px solid rgba(225, 98, 47, 0.7);
+    outline: 2px solid rgb(var(--ring) / 0.7);
     outline-offset: 2px;
   }
 }
@@ -47,41 +80,41 @@ body {
     @apply btn bg-graphite text-white shadow-sm ring-1 ring-inset ring-white/10 hover:bg-night hover:shadow-card-hover;
   }
   .btn-secondary {
-    @apply btn border border-graphite/15 bg-white text-graphite shadow-sm hover:border-graphite/25 hover:bg-graphite/[0.03];
+    @apply btn border border-content/15 bg-surface text-content shadow-sm hover:border-content/25 hover:bg-content/[0.03];
   }
   .btn-ghost {
-    @apply btn text-graphite/70 hover:bg-graphite/5 hover:text-graphite;
+    @apply btn text-content/70 hover:bg-content/5 hover:text-content;
   }
   .btn-danger {
     @apply btn bg-danger text-white shadow-sm ring-1 ring-inset ring-white/10 hover:bg-danger/90 hover:shadow-card-hover;
   }
 
   .card {
-    @apply rounded-xl border border-graphite/[0.08] bg-white shadow-card;
+    @apply rounded-xl border border-content/[0.08] bg-surface shadow-card;
   }
   /* Cards that are themselves links / clickable. */
   .card-interactive {
-    @apply card transition-all duration-200 hover:-translate-y-0.5 hover:border-graphite/[0.12] hover:shadow-card-hover;
+    @apply card transition-all duration-200 hover:-translate-y-0.5 hover:border-content/[0.14] hover:shadow-card-hover;
   }
 
   .input {
-    @apply w-full rounded-lg border border-graphite/20 bg-white px-3.5 py-2.5 text-sm text-graphite shadow-sm transition-shadow placeholder:text-graphite/40 focus:border-safety focus:outline-none focus:ring-2 focus:ring-safety/25;
+    @apply w-full rounded-lg border border-content/20 bg-surface px-3.5 py-2.5 text-sm text-content shadow-sm transition-shadow placeholder:text-content/40 focus:border-safety focus:outline-none focus:ring-2 focus:ring-safety/25;
   }
   .label {
-    @apply mb-1.5 block text-sm font-semibold text-graphite/80;
+    @apply mb-1.5 block text-sm font-semibold text-content/80;
   }
 
   /* Small uppercase section/eyebrow label used above cards & groups. */
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-wider text-graphite/50;
+    @apply text-xs font-semibold uppercase tracking-wider text-content/50;
   }
 
   /* Filter / segmented pills (work-orders status filter, etc.). */
   .pill {
-    @apply inline-flex items-center rounded-full border border-graphite/10 bg-white px-3.5 py-1.5 text-sm font-medium text-graphite/70 shadow-sm transition-colors hover:border-graphite/20 hover:text-graphite;
+    @apply inline-flex items-center rounded-full border border-content/10 bg-surface px-3.5 py-1.5 text-sm font-medium text-content/70 shadow-sm transition-colors hover:border-content/20 hover:text-content;
   }
   .pill-active {
-    @apply border-transparent bg-graphite text-white shadow-sm hover:text-white;
+    @apply border-transparent bg-graphite text-white shadow-sm hover:text-white dark:bg-content dark:text-canvas;
   }
 
   /* Shared data-table skin. Wrap a <table> with .data-table. */
@@ -89,16 +122,35 @@ body {
     @apply w-full text-sm;
   }
   .data-table thead tr {
-    @apply border-b border-graphite/10 bg-graphite/[0.03] text-left text-xs uppercase tracking-wider text-graphite/50;
+    @apply border-b border-content/10 bg-content/[0.03] text-left text-xs uppercase tracking-wider text-content/50;
   }
   .data-table th {
     @apply px-4 py-3 font-semibold;
   }
   .data-table tbody tr {
-    @apply border-b border-graphite/[0.06] transition-colors last:border-0 hover:bg-safety/[0.03];
+    @apply border-b border-content/[0.06] transition-colors last:border-0 hover:bg-safety/[0.04];
   }
   .data-table td {
     @apply px-4 py-3.5;
+  }
+  /* Right-align numeric columns; keep digits from jittering. */
+  .data-table .num {
+    @apply text-right tabular-nums;
+  }
+}
+
+/* Respect users who prefer less motion: neutralize entrance + hover transforms
+   and shimmer while keeping color/opacity transitions. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .animate-fade-in-up {
+    animation: none !important;
   }
 }
 

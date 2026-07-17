@@ -25,7 +25,7 @@ export default async function ReportPage({
         <div className="text-xs font-semibold uppercase tracking-wide text-safety">
           {asset.name}
         </div>
-        <h1 className="mt-1 text-xl font-bold text-graphite">
+        <h1 className="mt-1 text-xl font-bold text-content">
           Report a problem
         </h1>
       </div>
@@ -37,7 +37,7 @@ export default async function ReportPage({
       <div className="mt-4 text-center">
         <Link
           href={`/a/${params.publicId}`}
-          className="text-sm text-graphite/50"
+          className="text-sm text-content/50"
         >
           Cancel
         </Link>

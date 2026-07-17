@@ -8,7 +8,7 @@ import {
   topInsight,
 } from "@/lib/analytics";
 import { formatMoney, formatHours, formatDate } from "@/lib/format";
-import { PageHeader, SectionTitle } from "@/components/ui";
+import { PageHeader, SectionTitle, StatCard } from "@/components/ui";
 import {
   CostByAssetChart,
   MonthlySpendChart,
@@ -85,15 +85,15 @@ export default async function DashboardPage() {
               </svg>
             </span>
             <div>
-              <div className="text-sm font-bold text-graphite">
+              <div className="text-sm font-bold text-content">
                 {insight.title}
               </div>
-              <div className="mt-0.5 text-sm text-graphite/70">
+              <div className="mt-0.5 text-sm text-content/70">
                 {insight.body}
               </div>
             </div>
           </div>
-          <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-graphite/70 transition-transform group-hover:translate-x-0.5">
+          <span className="flex shrink-0 items-center gap-1 text-sm font-semibold text-content/70 transition-transform group-hover:translate-x-0.5">
             View
             <svg
               viewBox="0 0 24 24"
@@ -124,6 +124,8 @@ export default async function DashboardPage() {
           value={formatMoney(stats.spendCents90d)}
           iconPath={STAT_ICONS.spend}
           tone="safety"
+          hint="90d"
+          spark={monthly.map((m) => m.cents)}
         />
         <StatCard
           label="PM compliance"
@@ -166,26 +168,26 @@ export default async function DashboardPage() {
       <div className="card p-6">
         <SectionTitle>Recent activity</SectionTitle>
         {activity.length === 0 ? (
-          <p className="py-6 text-center text-sm text-graphite/50">
+          <p className="py-6 text-center text-sm text-content/50">
             Activity shows up here as your team logs work.
           </p>
         ) : (
-          <ul className="-my-1 divide-y divide-graphite/[0.06]">
+          <ul className="-my-1 divide-y divide-content/[0.06]">
             {activity.map((a) => (
               <li
                 key={a.id}
                 className="flex items-center justify-between gap-4 py-3 text-sm"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-graphite/[0.06] text-[11px] font-bold text-graphite/60">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-content/[0.06] text-[11px] font-bold text-content/60">
                     {a.actorName.slice(0, 1).toUpperCase()}
                   </span>
-                  <span className="text-graphite">
+                  <span className="text-content">
                     <span className="font-semibold">{a.actorName}</span> {a.verb}{" "}
-                    <span className="text-graphite/70">{a.subject}</span>
+                    <span className="text-content/70">{a.subject}</span>
                   </span>
                 </div>
-                <span className="shrink-0 text-xs text-graphite/40">
+                <span className="shrink-0 text-xs text-content/40">
                   {formatDate(a.createdAt, org.timezone)}
                 </span>
               </li>
@@ -197,69 +199,3 @@ export default async function DashboardPage() {
   );
 }
 
-const TONE_STYLES: Record<string, string> = {
-  graphite: "bg-graphite/[0.06] text-graphite",
-  safety: "bg-safety/10 text-safety",
-  ok: "bg-ok/10 text-ok",
-  danger: "bg-danger/10 text-danger",
-};
-
-function StatCard({
-  label,
-  value,
-  iconPath,
-  tone,
-  href,
-}: {
-  label: string;
-  value: string;
-  iconPath: string;
-  tone: keyof typeof TONE_STYLES;
-  href?: string;
-}) {
-  const inner = (
-    <div
-      className={`h-full p-5 ${href ? "card-interactive" : "card"}`}
-    >
-      <div className="flex items-center justify-between">
-        <span
-          className={`flex h-9 w-9 items-center justify-center rounded-lg ${TONE_STYLES[tone]}`}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.8}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-5 w-5"
-            aria-hidden
-          >
-            <path d={iconPath} />
-          </svg>
-        </span>
-        {href && (
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-4 w-4 text-graphite/30"
-            aria-hidden
-          >
-            <path d="M5 12h14M13 6l6 6-6 6" />
-          </svg>
-        )}
-      </div>
-      <div className="mt-4 text-2xl font-bold tabular-nums tracking-tight text-graphite">
-        {value}
-      </div>
-      <div className="mt-1 text-xs font-medium uppercase tracking-wide text-graphite/50">
-        {label}
-      </div>
-    </div>
-  );
-  return href ? <Link href={href}>{inner}</Link> : inner;
-}

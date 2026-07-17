@@ -58,7 +58,7 @@ export default async function WorkOrderDetailPage({
       <div className="mb-6 flex flex-wrap items-center gap-3 text-sm">
         <StatusChip kind="wo" status={wo.status} />
         {wo.priority === "high" && <Badge tone="danger">high priority</Badge>}
-        <span className="text-graphite/60">
+        <span className="text-content/60">
           Asset:{" "}
           <Link
             href={`/assets/${wo.asset.id}`}
@@ -103,13 +103,13 @@ export default async function WorkOrderDetailPage({
                       width={120}
                       height={120}
                       unoptimized
-                      className="h-28 w-28 rounded-md border border-graphite/10 object-cover"
+                      className="h-28 w-28 rounded-md border border-content/10 object-cover"
                     />
                   </a>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-graphite/50">No photos yet.</p>
+              <p className="text-sm text-content/50">No photos yet.</p>
             )}
             <AddPhotoPanel action={boundAddPhoto} />
           </div>
@@ -117,9 +117,9 @@ export default async function WorkOrderDetailPage({
 
         <div className="space-y-6">
           <div className="card overflow-hidden text-sm">
-            <div className="border-b border-graphite/[0.08] bg-graphite/[0.03] px-5 py-4">
+            <div className="border-b border-content/[0.08] bg-content/[0.03] px-5 py-4">
               <div className="eyebrow">Total cost</div>
-              <div className="mt-1 text-2xl font-bold tabular-nums tracking-tight text-graphite">
+              <div className="mt-1 text-2xl font-bold tabular-nums tracking-tight text-content">
                 {formatMoney(totalCost)}
               </div>
             </div>
@@ -170,10 +170,10 @@ function Row({
   strong?: boolean;
 }) {
   return (
-    <div className="flex justify-between gap-4 border-b border-graphite/5 pb-2 last:border-0 last:pb-0">
-      <span className="text-graphite/50">{label}</span>
+    <div className="flex justify-between gap-4 border-b border-content/5 pb-2 last:border-0 last:pb-0">
+      <span className="text-content/50">{label}</span>
       <span
-        className={`text-right ${strong ? "text-base font-bold" : "font-medium"} text-graphite`}
+        className={`text-right ${strong ? "text-base font-bold" : "font-medium"} text-content`}
       >
         {value}
       </span>

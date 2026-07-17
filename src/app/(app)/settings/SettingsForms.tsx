@@ -34,10 +34,10 @@ function Section({
 }) {
   return (
     <div className="card p-6">
-      <div className="mb-5 border-b border-graphite/[0.06] pb-4">
-        <h2 className="text-base font-bold text-graphite">{title}</h2>
+      <div className="mb-5 border-b border-content/[0.06] pb-4">
+        <h2 className="text-base font-bold text-content">{title}</h2>
         {desc && (
-          <p className="mt-1 text-sm leading-relaxed text-graphite/60">{desc}</p>
+          <p className="mt-1 text-sm leading-relaxed text-content/60">{desc}</p>
         )}
       </div>
       <div>{children}</div>
@@ -119,7 +119,7 @@ export function ProfileForm({
               defaultValue={(org.laborRateCents / 100).toString()}
               className="input"
             />
-            <p className="mt-1 text-xs text-graphite/40">
+            <p className="mt-1 text-xs text-content/40">
               Used to price downtime and labor cost.
             </p>
           </div>
@@ -144,13 +144,13 @@ export function PinForm({ pinEnabled }: { pinEnabled: boolean }) {
       desc="Require a 4-digit PIN before techs can report problems from a QR scan. They enter it once per shift."
     >
       <form action={formAction} className="space-y-4">
-        <label className="flex items-center gap-2 text-sm text-graphite/80">
+        <label className="flex items-center gap-2 text-sm text-content/80">
           <input
             type="checkbox"
             name="pinEnabled"
             checked={enabled}
             onChange={(e) => setEnabled(e.target.checked)}
-            className="h-4 w-4 rounded border-graphite/30 text-safety focus:ring-safety"
+            className="h-4 w-4 rounded border-content/30 text-safety focus:ring-safety"
           />
           Require a PIN on public report/meter pages
         </label>

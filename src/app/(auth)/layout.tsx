@@ -16,16 +16,16 @@ export default function AuthLayout({
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-safety to-safety/80 text-xl font-black text-white shadow-card ring-1 ring-white/20">
               U
             </div>
-            <span className="text-2xl font-bold tracking-tight text-graphite">
+            <span className="text-2xl font-bold tracking-tight text-content">
               UptimeHQ
             </span>
           </div>
-          <p className="mt-3 text-sm text-graphite/55">
+          <p className="mt-3 text-sm text-content/55">
             Equipment maintenance, minus the spreadsheets.
           </p>
         </div>
         {children}
-        <p className="mt-6 text-center text-xs text-graphite/40">
+        <p className="mt-6 text-center text-xs text-content/40">
           Unlimited users · No per-seat pricing · Cancel anytime
         </p>
       </div>

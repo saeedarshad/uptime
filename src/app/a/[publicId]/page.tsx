@@ -21,9 +21,9 @@ export default async function PublicAssetPage({
       <div className="text-xs font-semibold uppercase tracking-wide text-safety">
         {asset.org.name}
       </div>
-      <h1 className="mt-1 text-2xl font-bold text-graphite">{asset.name}</h1>
+      <h1 className="mt-1 text-2xl font-bold text-content">{asset.name}</h1>
       {asset.location && (
-        <div className="mt-1 text-sm text-graphite/60">{asset.location}</div>
+        <div className="mt-1 text-sm text-content/60">{asset.location}</div>
       )}
     </div>
   );
@@ -38,10 +38,10 @@ export default async function PublicAssetPage({
           <div className="flex h-14 w-14 items-center justify-center rounded-full bg-ok/15 text-3xl text-ok">
             ✓
           </div>
-          <h2 className="text-lg font-bold text-graphite">
+          <h2 className="text-lg font-bold text-content">
             {isReport ? "Problem reported" : "Reading logged"}
           </h2>
-          <p className="text-sm text-graphite/60">
+          <p className="text-sm text-content/60">
             {isReport
               ? `Thanks — the shop has been notified${
                   searchParams.wo
@@ -74,8 +74,8 @@ export default async function PublicAssetPage({
     <div>
       {AssetHeader}
       <div className="card mb-5 flex items-center justify-between p-4 text-sm">
-        <span className="text-graphite/60">Last serviced</span>
-        <span className="font-semibold text-graphite">
+        <span className="text-content/60">Last serviced</span>
+        <span className="font-semibold text-content">
           {serviced ? formatDate(serviced, asset.org.timezone) : "No record yet"}
         </span>
       </div>
@@ -84,7 +84,7 @@ export default async function PublicAssetPage({
           href={`/a/${params.publicId}/report`}
           className="group flex w-full items-center gap-4 rounded-xl bg-safety p-4 text-left text-white shadow-card ring-1 ring-inset ring-white/10 transition-all active:translate-y-px"
         >
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/15">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface/15">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden>
               <path d="M12 9v4m0 4h.01M10.3 3.9l-8 14A2 2 0 004 21h16a2 2 0 001.7-3l-8-14a2 2 0 00-3.4 0z" />
             </svg>
@@ -101,20 +101,20 @@ export default async function PublicAssetPage({
         </Link>
         <Link
           href={`/a/${params.publicId}/meter`}
-          className="group flex w-full items-center gap-4 rounded-xl border border-graphite/15 bg-white p-4 text-left text-graphite shadow-card transition-all active:translate-y-px"
+          className="group flex w-full items-center gap-4 rounded-xl border border-content/15 bg-surface p-4 text-left text-content shadow-card transition-all active:translate-y-px"
         >
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-graphite/[0.06] text-graphite/70">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-content/[0.06] text-content/70">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden>
               <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </span>
           <span className="flex-1">
             <span className="block text-base font-bold">Log meter reading</span>
-            <span className="block text-sm text-graphite/55">
+            <span className="block text-sm text-content/55">
               Hours, mileage, or cycles
             </span>
           </span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-graphite/30 transition-transform group-active:translate-x-0.5" aria-hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-content/30 transition-transform group-active:translate-x-0.5" aria-hidden>
             <path d="M9 6l6 6-6 6" />
           </svg>
         </Link>

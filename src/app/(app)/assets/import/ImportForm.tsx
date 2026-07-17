@@ -42,7 +42,7 @@ export function ImportForm() {
           className="input"
         />
       </div>
-      <div className="text-center text-xs uppercase tracking-wide text-graphite/40">
+      <div className="text-center text-xs uppercase tracking-wide text-content/40">
         or paste below
       </div>
       <div>
@@ -55,7 +55,7 @@ export function ImportForm() {
           className="input min-h-48 font-mono text-xs"
           placeholder={SAMPLE}
         />
-        <p className="mt-1 text-xs text-graphite/50">
+        <p className="mt-1 text-xs text-content/50">
           Columns: <code>name</code> (required), <code>category</code>,{" "}
           <code>location</code>, <code>purchase cost</code>,{" "}
           <code>purchase date</code>.

@@ -1,7 +1,7 @@
 export function Skeleton({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-lg bg-graphite/[0.07] ${className}`}
+      className={`relative overflow-hidden rounded-lg bg-content/[0.07] ${className}`}
     >
       <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-white/50 to-transparent" />
     </div>
@@ -12,7 +12,7 @@ export function Skeleton({ className = "" }: { className?: string }) {
 export function PageSkeleton() {
   return (
     <div>
-      <div className="mb-7 border-b border-graphite/[0.08] pb-5">
+      <div className="mb-7 border-b border-content/[0.08] pb-5">
         <Skeleton className="h-8 w-56" />
         <Skeleton className="mt-2 h-4 w-72" />
       </div>

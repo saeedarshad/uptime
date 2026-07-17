@@ -91,15 +91,15 @@ export default async function AssetDetailPage({
       </div>
 
       {/* Tabs */}
-      <div className="mb-5 flex flex-wrap gap-1 border-b border-graphite/[0.08]">
+      <div className="mb-5 flex flex-wrap gap-1 border-b border-content/[0.08]">
         {TABS.map((t) => (
           <Link
             key={t.key}
             href={`/assets/${asset.id}?tab=${t.key}`}
             className={`-mb-px border-b-2 px-3.5 py-2.5 text-sm font-semibold transition-colors ${
               tab === t.key
-                ? "border-safety text-graphite"
-                : "border-transparent text-graphite/50 hover:border-graphite/20 hover:text-graphite"
+                ? "border-safety text-content"
+                : "border-transparent text-content/50 hover:border-content/20 hover:text-content"
             }`}
           >
             {t.label}
@@ -152,21 +152,21 @@ async function HistoryTab({
     items.push({
       date: wo.openedAt,
       node: (
-        <div key={`wo-${wo.id}`} className="flex items-start justify-between gap-4 border-b border-graphite/5 py-3 last:border-0">
+        <div key={`wo-${wo.id}`} className="flex items-start justify-between gap-4 border-b border-content/5 py-3 last:border-0">
           <div>
             <Link
               href={`/work-orders/${wo.id}`}
-              className="font-medium text-graphite hover:text-safety"
+              className="font-medium text-content hover:text-safety"
             >
               {formatWoNumber(wo.number)} · {wo.title}
             </Link>
-            <div className="mt-0.5 text-xs text-graphite/50">
+            <div className="mt-0.5 text-xs text-content/50">
               {formatDate(wo.openedAt, tz)} · reported by {wo.reportedByName}
             </div>
           </div>
           <div className="text-right">
             <StatusChip kind="wo" status={wo.status} />
-            <div className="mt-1 text-sm font-medium tabular-nums text-graphite">
+            <div className="mt-1 text-sm font-medium tabular-nums text-content">
               {formatMoney(wo.partsCostCents + wo.laborCostCents)}
             </div>
           </div>
@@ -179,12 +179,12 @@ async function HistoryTab({
     items.push({
       date: when,
       node: (
-        <div key={`pm-${pm.id}`} className="flex items-start justify-between gap-4 border-b border-graphite/5 py-3 last:border-0">
+        <div key={`pm-${pm.id}`} className="flex items-start justify-between gap-4 border-b border-content/5 py-3 last:border-0">
           <div>
-            <span className="font-medium text-graphite">
+            <span className="font-medium text-content">
               PM · {pm.schedule.taskName}
             </span>
-            <div className="mt-0.5 text-xs text-graphite/50">
+            <div className="mt-0.5 text-xs text-content/50">
               {formatDate(when, tz)}
               {pm.completedByName ? ` · by ${pm.completedByName}` : ""}
             </div>
@@ -198,7 +198,7 @@ async function HistoryTab({
 
   if (items.length === 0) {
     return (
-      <p className="card p-6 text-sm text-graphite/50">
+      <p className="card p-6 text-sm text-content/50">
         No history yet. Work orders and completed PM tasks show up here.
       </p>
     );
@@ -230,16 +230,16 @@ async function SchedulesTab({
         </Link>
       </div>
       {schedules.length === 0 ? (
-        <p className="card p-6 text-sm text-graphite/50">
+        <p className="card p-6 text-sm text-content/50">
           No maintenance schedules for this asset yet.
         </p>
       ) : (
-        <div className="card divide-y divide-graphite/5">
+        <div className="card divide-y divide-content/5">
           {schedules.map((s) => (
             <div key={s.id} className="flex items-center justify-between p-4">
               <div>
-                <div className="font-medium text-graphite">{s.taskName}</div>
-                <div className="text-xs text-graphite/50">
+                <div className="font-medium text-content">{s.taskName}</div>
+                <div className="text-xs text-content/50">
                   {s.triggerType === "time"
                     ? `Every ${s.intervalDays} days`
                     : `Every ${s.meterIntervalUnits} ${s.meterUnitLabel}`}
@@ -274,12 +274,12 @@ async function DocumentsTab({
   return (
     <div className="space-y-4">
       {docs.length === 0 ? (
-        <p className="card p-6 text-sm text-graphite/50">
+        <p className="card p-6 text-sm text-content/50">
           No documents yet. Upload manuals, calibration or inspection
           certificates below.
         </p>
       ) : (
-        <div className="card divide-y divide-graphite/5">
+        <div className="card divide-y divide-content/5">
           {docs.map((d) => {
             const days = d.expiresAt ? daysUntil(d.expiresAt, now) : null;
             return (
@@ -289,11 +289,11 @@ async function DocumentsTab({
                     href={d.fileUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-medium text-graphite hover:text-safety"
+                    className="font-medium text-content hover:text-safety"
                   >
                     {d.title}
                   </a>
-                  <div className="text-xs capitalize text-graphite/50">
+                  <div className="text-xs capitalize text-content/50">
                     {d.kind}
                     {d.expiresAt
                       ? ` · expires ${formatDate(d.expiresAt, tz)}`
@@ -324,19 +324,19 @@ async function MeterTab({ assetId, tz }: { assetId: string; tz: string }) {
   });
   if (readings.length === 0) {
     return (
-      <p className="card p-6 text-sm text-graphite/50">
+      <p className="card p-6 text-sm text-content/50">
         No meter readings yet. Techs log these from the QR scan page.
       </p>
     );
   }
   return (
-    <div className="card divide-y divide-graphite/5">
+    <div className="card divide-y divide-content/5">
       {readings.map((r) => (
         <div key={r.id} className="flex items-center justify-between p-4">
-          <div className="font-medium tabular-nums text-graphite">
+          <div className="font-medium tabular-nums text-content">
             {Number(r.value).toLocaleString()} {r.unitLabel}
           </div>
-          <div className="text-xs text-graphite/50">
+          <div className="text-xs text-content/50">
             {formatDate(r.readAt, tz)} · {r.enteredByName}
           </div>
         </div>
@@ -348,10 +348,10 @@ async function MeterTab({ assetId, tz }: { assetId: string; tz: string }) {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="card p-4">
-      <div className="text-[11px] font-medium uppercase tracking-wide text-graphite/50">
+      <div className="text-[11px] font-medium uppercase tracking-wide text-content/50">
         {label}
       </div>
-      <div className="mt-1.5 text-xl font-bold tabular-nums tracking-tight text-graphite">
+      <div className="mt-1.5 text-xl font-bold tabular-nums tracking-tight text-content">
         {value}
       </div>
     </div>

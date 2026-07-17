@@ -82,7 +82,10 @@ export function Sidebar() {
         <div className="h-px bg-white/10" />
       </div>
 
-      <nav className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4">
+      <nav
+        aria-label="Main"
+        className="min-h-0 flex-1 space-y-1 overflow-y-auto px-3 py-4"
+      >
         <div className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white/30">
           Menu
         </div>
@@ -146,7 +149,10 @@ export function Sidebar() {
 export function MobileTabs() {
   const pathname = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-graphite/10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 md:hidden">
+    <nav
+      aria-label="Primary"
+      className="fixed inset-x-0 bottom-0 z-40 flex border-t border-content/10 bg-surface/95 backdrop-blur supports-[backdrop-filter]:bg-surface/80 md:hidden"
+    >
       {MOBILE_ITEMS.map((item) => {
         const active = isActive(pathname, item.href);
         return (
@@ -155,7 +161,7 @@ export function MobileTabs() {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={`relative flex flex-1 flex-col items-center gap-0.5 py-2.5 text-[10px] font-semibold transition-colors ${
-              active ? "text-safety" : "text-graphite/45"
+              active ? "text-safety" : "text-content/45"
             }`}
           >
             {active && (

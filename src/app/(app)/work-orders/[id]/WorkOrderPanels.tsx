@@ -48,7 +48,7 @@ export function EditPanel({
 
   return (
     <form action={formAction} className="card space-y-4 p-5">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-graphite/50">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-content/50">
         Details
       </h2>
       <div>
@@ -91,7 +91,7 @@ export function EditPanel({
             <option value="cancelled">Cancelled</option>
           </select>
           {closed && (
-            <p className="mt-1 text-xs text-graphite/40">
+            <p className="mt-1 text-xs text-content/40">
               Reopen below to change status.
             </p>
           )}
@@ -171,7 +171,7 @@ export function EditPanel({
             }
             className="input"
           />
-          <p className="mt-1 text-xs text-graphite/40">
+          <p className="mt-1 text-xs text-content/40">
             Auto: {formatMoney(autoLabor)} at{" "}
             {formatMoney(laborRateCents)}/hr. Leave to override.
           </p>
@@ -205,10 +205,10 @@ export function ClosePanel({
   if (status === "done") {
     return (
       <div className="card space-y-3 p-5">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-graphite/50">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-content/50">
           Closed
         </h2>
-        <p className="text-sm text-graphite/60">
+        <p className="text-sm text-content/60">
           This work order is done. Reopen it to make further changes.
         </p>
         <form action={reopenAction}>
@@ -220,7 +220,7 @@ export function ClosePanel({
 
   return (
     <form action={formAction} className="card space-y-3 p-5">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-graphite/50">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-content/50">
         Close work order
       </h2>
       <div>
@@ -234,7 +234,7 @@ export function ClosePanel({
           defaultValue="0"
           className="input"
         />
-        <p className="mt-1 text-xs text-graphite/40">
+        <p className="mt-1 text-xs text-content/40">
           Used to price downtime against your labor rate.
         </p>
       </div>

@@ -134,12 +134,12 @@ export function AssetForm({
           className="input min-h-20"
         />
       </div>
-      <label className="flex items-center gap-2 text-sm text-graphite/80">
+      <label className="flex items-center gap-2 text-sm text-content/80">
         <input
           type="checkbox"
           name="isComplianceTracked"
           defaultChecked={values.isComplianceTracked ?? false}
-          className="h-4 w-4 rounded border-graphite/30 text-safety focus:ring-safety"
+          className="h-4 w-4 rounded border-content/30 text-safety focus:ring-safety"
         />
         Compliance-tracked (DOT vehicle, calibrated instrument, etc.)
       </label>

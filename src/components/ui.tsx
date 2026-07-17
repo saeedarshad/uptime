@@ -7,7 +7,7 @@ const TONE: Record<StatusTone, string> = {
   ok: "bg-ok/10 text-ok ring-ok/20",
   warn: "bg-warn/10 text-warn ring-warn/20",
   danger: "bg-danger/10 text-danger ring-danger/20",
-  muted: "bg-graphite/[0.07] text-graphite/70 ring-graphite/15",
+  muted: "bg-content/[0.07] text-content/70 ring-content/15",
   info: "bg-safety/10 text-safety ring-safety/20",
 };
 
@@ -15,7 +15,7 @@ const DOT: Record<StatusTone, string> = {
   ok: "bg-ok",
   warn: "bg-warn",
   danger: "bg-danger",
-  muted: "bg-graphite/40",
+  muted: "bg-content/40",
   info: "bg-safety",
 };
 
@@ -83,20 +83,23 @@ export function StatusChip({
 export function PageHeader({
   title,
   subtitle,
+  eyebrow,
   action,
 }: {
   title: string;
   subtitle?: string;
+  eyebrow?: string;
   action?: ReactNode;
 }) {
   return (
-    <div className="mb-7 flex flex-wrap items-start justify-between gap-4 border-b border-graphite/[0.08] pb-5">
+    <div className="mb-7 flex flex-wrap items-start justify-between gap-4 border-b border-content/[0.08] pb-5">
       <div className="min-w-0">
-        <h1 className="text-2xl font-bold tracking-tight text-graphite">
+        {eyebrow && <div className="eyebrow mb-1.5">{eyebrow}</div>}
+        <h1 className="text-2xl font-bold tracking-tight text-content">
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-1.5 max-w-2xl text-sm text-graphite/60">{subtitle}</p>
+          <p className="mt-1.5 max-w-2xl text-sm text-content/60">{subtitle}</p>
         )}
       </div>
       {action && (
@@ -122,8 +125,8 @@ export function EmptyState({
       <div className="mb-1 flex h-12 w-12 items-center justify-center rounded-full bg-safety/10 text-safety">
         {icon ?? <DefaultEmptyIcon />}
       </div>
-      <div className="text-lg font-semibold text-graphite">{title}</div>
-      <p className="max-w-sm text-sm leading-relaxed text-graphite/60">{body}</p>
+      <div className="text-lg font-semibold text-content">{title}</div>
+      <p className="max-w-sm text-sm leading-relaxed text-content/60">{body}</p>
       {action && <div className="mt-2">{action}</div>}
     </div>
   );
@@ -171,4 +174,140 @@ export function LinkButton({
 /** Small uppercase eyebrow label used above cards and section groups. */
 export function SectionTitle({ children }: { children: ReactNode }) {
   return <h2 className="eyebrow mb-3">{children}</h2>;
+}
+
+// --- KPI stat card ------------------------------------------------------------
+
+type StatTone = "graphite" | "safety" | "ok" | "danger";
+
+const STAT_TONE: Record<StatTone, { chip: string; spark: string }> = {
+  graphite: { chip: "bg-content/[0.06] text-content", spark: "rgb(var(--content))" },
+  safety: { chip: "bg-safety/10 text-safety", spark: "rgb(var(--safety))" },
+  ok: { chip: "bg-ok/10 text-ok", spark: "rgb(var(--ok))" },
+  danger: { chip: "bg-danger/10 text-danger", spark: "rgb(var(--danger))" },
+};
+
+/** A single KPI tile: accent-chipped icon, big value, label, and an optional
+ *  server-rendered sparkline of recent history. Becomes a link when `href` set. */
+export function StatCard({
+  label,
+  value,
+  iconPath,
+  tone,
+  href,
+  hint,
+  spark,
+}: {
+  label: string;
+  value: string;
+  iconPath: string;
+  tone: StatTone;
+  href?: string;
+  hint?: string;
+  spark?: number[];
+}) {
+  const t = STAT_TONE[tone];
+  const inner = (
+    <div className={`flex h-full flex-col p-5 ${href ? "card-interactive" : "card"}`}>
+      <div className="flex items-center justify-between">
+        <span
+          className={`flex h-9 w-9 items-center justify-center rounded-lg ${t.chip}`}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5"
+            aria-hidden
+          >
+            <path d={iconPath} />
+          </svg>
+        </span>
+        {href ? (
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-4 w-4 text-content/30"
+            aria-hidden
+          >
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        ) : (
+          spark &&
+          spark.length > 1 && <Sparkline data={spark} color={t.spark} />
+        )}
+      </div>
+      <div className="mt-4 text-2xl font-bold tabular-nums tracking-tight text-content">
+        {value}
+      </div>
+      <div className="mt-1 flex items-baseline gap-2">
+        <span className="text-xs font-medium uppercase tracking-wide text-content/50">
+          {label}
+        </span>
+        {hint && <span className="text-xs text-content/40">· {hint}</span>}
+      </div>
+    </div>
+  );
+  return href ? (
+    <Link href={href} className="h-full">
+      {inner}
+    </Link>
+  ) : (
+    inner
+  );
+}
+
+/** Pure-SVG sparkline — renders on the server, no chart library needed. */
+export function Sparkline({
+  data,
+  color,
+  width = 72,
+  height = 26,
+}: {
+  data: number[];
+  color: string;
+  width?: number;
+  height?: number;
+}) {
+  const max = Math.max(...data, 1);
+  const min = Math.min(...data, 0);
+  const span = max - min || 1;
+  const stepX = width / (data.length - 1);
+  const y = (v: number) => height - ((v - min) / span) * (height - 4) - 2;
+  const points = data.map((v, i) => `${(i * stepX).toFixed(1)},${y(v).toFixed(1)}`);
+  const line = `M${points.join(" L")}`;
+  const area = `${line} L${width},${height} L0,${height} Z`;
+  const gid = `spark-${Math.round(color.length * data.length)}`;
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      fill="none"
+      aria-hidden
+      className="overflow-visible"
+    >
+      <defs>
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity={0.18} />
+          <stop offset="100%" stopColor={color} stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <path d={area} fill={`url(#${gid})`} />
+      <path
+        d={line}
+        stroke={color}
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 }

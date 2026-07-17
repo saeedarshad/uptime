@@ -105,7 +105,7 @@ export default async function InsightsPage() {
       ) : (
         <div className="space-y-3">
           {lastComputed && (
-            <p className="text-xs text-graphite/40">
+            <p className="text-xs text-content/40">
               Last recalculated {formatDateTime(lastComputed, org.timezone)}
             </p>
           )}
@@ -131,10 +131,10 @@ export default async function InsightsPage() {
                     >
                       {style.label}
                     </div>
-                    <h3 className="mt-0.5 text-base font-semibold text-graphite">
+                    <h3 className="mt-0.5 text-base font-semibold text-content">
                       {insight.title}
                     </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-graphite/70">
+                    <p className="mt-1 text-sm leading-relaxed text-content/70">
                       {insight.body}
                     </p>
                     <div className="mt-4 flex items-center gap-2">

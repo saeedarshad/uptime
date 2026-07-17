@@ -79,7 +79,7 @@ export function ReportForm({
                 className={`rounded-full border px-3 py-2 text-sm font-medium transition-colors ${
                   active
                     ? "border-safety bg-safety text-white"
-                    : "border-graphite/20 bg-white text-graphite hover:border-safety"
+                    : "border-content/20 bg-surface text-content hover:border-safety"
                 }`}
               >
                 {s}
@@ -121,7 +121,7 @@ export function ReportForm({
           <img
             src={preview}
             alt="Preview"
-            className="mt-2 max-h-48 rounded-md border border-graphite/10"
+            className="mt-2 max-h-48 rounded-md border border-content/10"
           />
         )}
       </div>

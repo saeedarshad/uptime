@@ -42,27 +42,27 @@ export default async function SettingsPage() {
         <ChipsForm chips={org.symptomChips} />
 
         <div className="card p-6">
-          <div className="mb-5 border-b border-graphite/[0.06] pb-4">
-            <h2 className="text-base font-bold text-graphite">Team</h2>
-            <p className="mt-1 text-sm leading-relaxed text-graphite/60">
+          <div className="mb-5 border-b border-content/[0.06] pb-4">
+            <h2 className="text-base font-bold text-content">Team</h2>
+            <p className="mt-1 text-sm leading-relaxed text-content/60">
               Unlimited users on every plan. Invite by email — they set a
               password from the link, no verification hoops.
             </p>
           </div>
 
-          <div className="mb-6 divide-y divide-graphite/[0.06]">
+          <div className="mb-6 divide-y divide-content/[0.06]">
             {users.map((u) => (
               <div
                 key={u.id}
                 className="flex items-center justify-between py-3 text-sm"
               >
                 <div className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-graphite/[0.06] text-[11px] font-bold text-graphite/60">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-content/[0.06] text-[11px] font-bold text-content/60">
                     {u.name.slice(0, 1).toUpperCase()}
                   </span>
                   <div>
-                    <div className="font-semibold text-graphite">{u.name}</div>
-                    <div className="text-xs text-graphite/50">{u.email}</div>
+                    <div className="font-semibold text-content">{u.name}</div>
+                    <div className="text-xs text-content/50">{u.email}</div>
                   </div>
                 </div>
                 <Badge tone={u.role === "tech" ? "muted" : "info"}>
@@ -76,10 +76,10 @@ export default async function SettingsPage() {
 
           {invites.length > 0 && (
             <div className="mt-6">
-              <h3 className="mb-2 text-sm font-semibold text-graphite/70">
+              <h3 className="mb-2 text-sm font-semibold text-content/70">
                 Pending invites
               </h3>
-              <div className="divide-y divide-graphite/5">
+              <div className="divide-y divide-content/5">
                 {invites.map((inv) => {
                   const link = `${appUrl()}/invite/${inv.token}`;
                   const revoke = revokeInvite.bind(null, inv.id);
@@ -89,13 +89,13 @@ export default async function SettingsPage() {
                       className="flex flex-wrap items-center justify-between gap-2 py-2.5 text-sm"
                     >
                       <div>
-                        <span className="font-medium text-graphite">
+                        <span className="font-medium text-content">
                           {inv.name}
                         </span>
-                        <span className="ml-2 text-graphite/50">
+                        <span className="ml-2 text-content/50">
                           {inv.email} · {inv.role}
                         </span>
-                        <div className="mt-0.5 break-all font-mono text-xs text-graphite/40">
+                        <div className="mt-0.5 break-all font-mono text-xs text-content/40">
                           {link}
                         </div>
                       </div>

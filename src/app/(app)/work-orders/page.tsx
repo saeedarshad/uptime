@@ -114,13 +114,13 @@ export default async function WorkOrdersPage({
                     <td>
                       <Link
                         href={`/work-orders/${wo.id}`}
-                        className="font-semibold text-graphite hover:text-safety"
+                        className="font-semibold text-content hover:text-safety"
                       >
                         {formatWoNumber(wo.number)}
                       </Link>
                     </td>
-                    <td className="font-medium text-graphite">{wo.title}</td>
-                    <td className="text-graphite/70">{wo.asset.name}</td>
+                    <td className="font-medium text-content">{wo.title}</td>
+                    <td className="text-content/70">{wo.asset.name}</td>
                     <td>
                       <StatusChip kind="wo" status={wo.status} />
                     </td>
@@ -130,15 +130,15 @@ export default async function WorkOrdersPage({
                           high
                         </Badge>
                       ) : (
-                        <span className="capitalize text-graphite/60">
+                        <span className="capitalize text-content/60">
                           {wo.priority}
                         </span>
                       )}
                     </td>
-                    <td className="text-graphite/60">
+                    <td className="text-content/60">
                       {formatDate(wo.openedAt, org.timezone)}
                     </td>
-                    <td className="text-right font-semibold tabular-nums text-graphite">
+                    <td className="text-right font-semibold tabular-nums text-content">
                       {formatMoney(wo.partsCostCents + wo.laborCostCents)}
                     </td>
                   </tr>

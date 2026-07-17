@@ -7,12 +7,12 @@ export default async function LoginPage() {
   if (await getAuth()) redirect("/dashboard");
   return (
     <div className="card p-7 sm:p-8">
-      <h1 className="text-xl font-bold tracking-tight text-graphite">Sign in</h1>
-      <p className="mb-6 mt-1 text-sm text-graphite/60">
+      <h1 className="text-xl font-bold tracking-tight text-content">Sign in</h1>
+      <p className="mb-6 mt-1 text-sm text-content/60">
         Welcome back. Sign in to your dashboard.
       </p>
       <LoginForm />
-      <p className="mt-6 text-center text-sm text-graphite/60">
+      <p className="mt-6 text-center text-sm text-content/60">
         No account yet?{" "}
         <Link href="/register" className="font-semibold text-safety hover:underline">
           Create one
