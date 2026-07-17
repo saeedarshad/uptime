@@ -20,6 +20,7 @@ export default async function NewSchedulePage({
     <div className="mx-auto max-w-2xl">
       <PageHeader
         title="New maintenance schedule"
+        breadcrumbs={[{ label: "Schedule", href: "/schedule" }]}
         action={
           <Link href="/schedule" className="btn-ghost">
             Cancel

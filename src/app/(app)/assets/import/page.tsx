@@ -10,6 +10,7 @@ export default async function ImportAssetsPage() {
       <PageHeader
         title="Import assets"
         subtitle="Bulk-add equipment for fast onboarding."
+        breadcrumbs={[{ label: "Assets", href: "/assets" }]}
         action={
           <Link href="/assets" className="btn-ghost">
             Cancel

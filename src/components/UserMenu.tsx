@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { logoutAction } from "@/app/(app)/actions";
 
@@ -91,6 +92,30 @@ export function UserMenu({
               {userRole}
             </span>
           </div>
+          {userRole !== "tech" && (
+            <div className="border-t border-content/[0.06] p-1.5">
+              <Link
+                href="/settings"
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm font-medium text-content/80 transition-colors hover:bg-content/5 hover:text-content"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.8}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  aria-hidden
+                >
+                  <path d="M10.3 3.9a1.65 1.65 0 013.4 0l.1.4a1.65 1.65 0 002.4 1l.4-.2a1.65 1.65 0 012.2 2.2l-.2.4a1.65 1.65 0 001 2.4l.4.1a1.65 1.65 0 010 3.4l-.4.1a1.65 1.65 0 00-1 2.4l.2.4a1.65 1.65 0 01-2.2 2.2l-.4-.2a1.65 1.65 0 00-2.4 1l-.1.4a1.65 1.65 0 01-3.4 0l-.1-.4a1.65 1.65 0 00-2.4-1l-.4.2a1.65 1.65 0 01-2.2-2.2l.2-.4a1.65 1.65 0 00-1-2.4l-.4-.1a1.65 1.65 0 010-3.4l.4-.1a1.65 1.65 0 001-2.4l-.2-.4a1.65 1.65 0 012.2-2.2l.4.2a1.65 1.65 0 002.4-1zM12 15a3 3 0 100-6 3 3 0 000 6z" />
+                </svg>
+                Settings
+              </Link>
+            </div>
+          )}
           <div className="border-t border-content/[0.06] p-1.5">
             <form action={logoutAction}>
               <button

@@ -20,6 +20,7 @@ export default async function NewWorkOrderPage({
     <div className="mx-auto max-w-2xl">
       <PageHeader
         title="New work order"
+        breadcrumbs={[{ label: "Work orders", href: "/work-orders" }]}
         action={
           <Link href="/work-orders" className="btn-ghost">
             Cancel

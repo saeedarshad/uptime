@@ -12,6 +12,7 @@ import {
 } from "@/lib/format";
 import { formatWoNumber } from "@/lib/workorders";
 import { PageHeader, StatusChip, Badge } from "@/components/ui";
+import { ActionMenu } from "@/components/ActionMenu";
 import { setAssetArchived, addAssetDocument } from "../actions";
 import { AddDocument } from "./AddDocument";
 
@@ -45,28 +46,39 @@ export default async function AssetDetailPage({
       <PageHeader
         title={asset.name}
         subtitle={[asset.category, asset.location].filter(Boolean).join(" · ")}
+        breadcrumbs={[{ label: "Assets", href: "/assets" }]}
         action={
           <>
-            <a
-              href={`/assets/${asset.id}/export.pdf`}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-secondary"
-            >
-              Export PDF
-            </a>
-            <Link href={`/assets/${asset.id}/label`} className="btn-secondary">
-              Label
-            </Link>
-            <Link
-              href={`/work-orders/new?asset=${asset.id}`}
-              className="btn-secondary"
-            >
-              New WO
+            <Link href={`/work-orders/new?asset=${asset.id}`} className="btn-primary">
+              New work order
             </Link>
             <Link href={`/assets/${asset.id}/edit`} className="btn-secondary">
               Edit
             </Link>
+            <ActionMenu
+              label="More"
+              items={[
+                {
+                  label: "Export PDF",
+                  href: `/assets/${asset.id}/export.pdf`,
+                  newTab: true,
+                  iconPath: "M12 3v12m0 0l-4-4m4 4l4-4M5 21h14",
+                },
+                {
+                  label: "Print label",
+                  href: `/assets/${asset.id}/label`,
+                  iconPath:
+                    "M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-4a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 01-2 2h-2M6 14h12v7H6z",
+                },
+                {
+                  label: "Archive asset",
+                  action: archive,
+                  danger: true,
+                  iconPath:
+                    "M21 8v13H3V8M1 3h22v5H1zM10 12h4",
+                },
+              ]}
+            />
           </>
         }
       />
@@ -115,12 +127,6 @@ export default async function AssetDetailPage({
         <DocumentsTab assetId={asset.id} tz={org.timezone} addDoc={boundAddDoc} />
       )}
       {tab === "meter" && <MeterTab assetId={asset.id} tz={org.timezone} />}
-
-      <form action={archive} className="mt-10">
-        <button className="text-sm font-medium text-danger/80 hover:text-danger">
-          Archive this asset
-        </button>
-      </form>
     </div>
   );
 }

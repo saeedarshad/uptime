@@ -185,14 +185,10 @@ export function ChipsForm({ chips }: { chips: string[] }) {
   return (
     <Section
       title="Symptom chips"
-      desc="The quick-pick buttons techs tap when reporting a problem. One per line."
+      desc="The quick-pick buttons techs tap when reporting a problem. Type one and press Enter to add it; click ✕ to remove."
     >
       <form action={formAction} className="space-y-4">
-        <textarea
-          name="chips"
-          defaultValue={chips.join("\n")}
-          className="input min-h-40 font-mono text-sm"
-        />
+        <ChipsInput name="chips" initial={chips} />
         <div className="flex justify-end">
           <SubmitButton className="btn-primary" pendingText="Saving…">
             Save chips
@@ -200,6 +196,84 @@ export function ChipsForm({ chips }: { chips: string[] }) {
         </div>
       </form>
     </Section>
+  );
+}
+
+/** Tag/pill input. Chips render as removable pills; typing + Enter (or comma)
+ *  adds one. Submits a single comma-joined hidden field the server splits. */
+function ChipsInput({ name, initial }: { name: string; initial: string[] }) {
+  const [chips, setChips] = useState<string[]>(initial);
+  const [draft, setDraft] = useState("");
+  const MAX = 20;
+
+  function add(raw: string) {
+    const value = raw.trim();
+    if (!value) return;
+    if (chips.length >= MAX) return;
+    if (chips.some((c) => c.toLowerCase() === value.toLowerCase())) {
+      setDraft("");
+      return;
+    }
+    setChips([...chips, value]);
+    setDraft("");
+  }
+
+  function remove(index: number) {
+    setChips(chips.filter((_, i) => i !== index));
+  }
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      add(draft);
+    } else if (e.key === "Backspace" && draft === "" && chips.length > 0) {
+      remove(chips.length - 1);
+    }
+  }
+
+  return (
+    <div>
+      <input type="hidden" name={name} value={chips.join(",")} />
+      <div className="flex flex-wrap items-center gap-2 rounded-lg border border-content/20 bg-surface p-2.5 shadow-sm transition-shadow focus-within:border-safety focus-within:ring-2 focus-within:ring-safety/25">
+        {chips.map((chip, i) => (
+          <span
+            key={`${chip}-${i}`}
+            className="inline-flex items-center gap-1.5 rounded-full bg-content/[0.06] py-1 pl-3 pr-1.5 text-sm font-medium text-content"
+          >
+            {chip}
+            <button
+              type="button"
+              onClick={() => remove(i)}
+              aria-label={`Remove ${chip}`}
+              className="flex h-4 w-4 items-center justify-center rounded-full text-content/40 transition-colors hover:bg-danger/10 hover:text-danger"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2.5}
+                strokeLinecap="round"
+                className="h-3 w-3"
+                aria-hidden
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </span>
+        ))}
+        <input
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={onKeyDown}
+          onBlur={() => add(draft)}
+          placeholder={chips.length === 0 ? "e.g. Won't start, Leaking oil…" : "Add another…"}
+          className="min-w-[10rem] flex-1 border-0 bg-transparent px-1.5 py-1 text-sm text-content outline-none placeholder:text-content/40"
+        />
+      </div>
+      <p className="mt-1.5 text-xs text-content/40">
+        {chips.length}/{MAX} chips
+      </p>
+    </div>
   );
 }
 
