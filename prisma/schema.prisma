@@ -17,6 +17,7 @@ enum BusinessType {
   machine_shop
   gym
   contractor
+  restaurant
   other
 }
 

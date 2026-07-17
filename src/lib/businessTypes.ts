@@ -5,6 +5,7 @@ export const BUSINESS_TYPES: { value: BusinessType; label: string }[] = [
   { value: "machine_shop", label: "Machine shop" },
   { value: "gym", label: "Gym / fitness" },
   { value: "contractor", label: "Contractor" },
+  { value: "restaurant", label: "Restaurant / cafe" },
   { value: "other", label: "Other" },
 ];
 
@@ -49,6 +50,16 @@ const CHIPS: Record<BusinessType, string[]> = {
     "Flat / damaged tire",
     "Warning light",
     "Broken attachment",
+    "Damaged",
+  ],
+  restaurant: [
+    "Not cooling / warm",
+    "Not heating",
+    "Leaking water",
+    "Strange noise",
+    "Won't turn on",
+    "Ice / frost buildup",
+    "Error code",
     "Damaged",
   ],
   other: [

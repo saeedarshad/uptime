@@ -20,7 +20,14 @@ const profileSchema = z.object({
   name: z.string().min(2, "Business name is required"),
   city: z.string().optional(),
   timezone: z.string().min(1),
-  businessType: z.enum(["auto", "machine_shop", "gym", "contractor", "other"]),
+  businessType: z.enum([
+    "auto",
+    "machine_shop",
+    "gym",
+    "contractor",
+    "restaurant",
+    "other",
+  ]),
   laborRate: z.string().optional(),
 });
 

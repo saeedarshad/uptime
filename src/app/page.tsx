@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAuth } from "@/lib/auth";
+import { CASE_STUDIES } from "@/lib/caseStudies";
 
 export const metadata = {
   title: "UptimeHQ — Equipment maintenance for small shops",
@@ -21,6 +22,7 @@ export default async function Home() {
       <LogoStrip />
       <Features />
       <HowItWorks />
+      <Industries />
       <Pricing loggedIn={loggedIn} />
       <CtaBand loggedIn={loggedIn} />
       <Footer />
@@ -62,6 +64,12 @@ function LandingHeader({ loggedIn }: { loggedIn: boolean }) {
             className="text-sm font-medium text-content/70 transition-colors hover:text-content"
           >
             How it works
+          </a>
+          <a
+            href="#industries"
+            className="text-sm font-medium text-content/70 transition-colors hover:text-content"
+          >
+            Case studies
           </a>
           <a
             href="#pricing"
@@ -225,6 +233,7 @@ function LogoStrip() {
     "Machine shops",
     "Gyms",
     "Contractors",
+    "Restaurants & cafés",
     "Fleets",
   ];
   return (
@@ -366,6 +375,71 @@ function HowItWorks() {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function Industries() {
+  return (
+    <section id="industries" className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-28">
+      <div className="mx-auto max-w-2xl text-center">
+        <div className="eyebrow">Find your business</div>
+        <h2 className="mt-3 text-3xl font-bold tracking-tight text-content sm:text-4xl">
+          See exactly how it works in your world
+        </h2>
+        <p className="mt-4 text-lg text-content/60">
+          Pick the trade closest to yours. Each case study walks through the
+          equipment tracked, how the team uses it day to day, and what it saved —
+          in time and dollars.
+        </p>
+        <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-content/10 bg-surface px-3.5 py-1.5 text-xs font-medium text-content/50">
+          <span className="h-1.5 w-1.5 rounded-full bg-warn" />
+          Illustrative examples from our R&amp;D — modeled, not real clients
+        </p>
+      </div>
+
+      <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {CASE_STUDIES.map((c) => (
+          <Link
+            key={c.slug}
+            href={`/case-studies/${c.slug}`}
+            className="card-interactive flex flex-col p-6"
+          >
+            <div className="flex items-center gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-safety/10 text-2xl">
+                {c.emoji}
+              </span>
+              <div>
+                <h3 className="text-base font-bold text-content">{c.industry}</h3>
+                <div className="text-xs font-semibold text-safety">
+                  {c.cardStat}
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 rounded-lg border border-content/[0.06] bg-content/[0.02] p-3.5">
+              <div className="text-[10px] font-bold uppercase tracking-wider text-content/40">
+                In practice
+              </div>
+              <p className="mt-1 text-sm leading-relaxed text-content/70">
+                {c.mapLine}
+              </p>
+            </div>
+            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-safety">
+              Read the case study
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="h-4 w-4"
+                aria-hidden
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          </Link>
+        ))}
       </div>
     </section>
   );

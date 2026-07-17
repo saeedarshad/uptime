@@ -19,6 +19,7 @@ const registerSchema = z.object({
     "machine_shop",
     "gym",
     "contractor",
+    "restaurant",
     "other",
   ]),
   city: z.string().optional(),

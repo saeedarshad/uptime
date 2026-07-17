@@ -29,6 +29,10 @@ npm run seed         # reset the demo org "Route 66 Auto Care"
 npm run cron         # run the nightly job once
 ```
 
+**Always run the dev server on `http://localhost:3000`** — never a different
+port. If 3000 is busy, stop/reuse the existing server rather than spinning up a
+new one on another port (don't use auto-port fallback).
+
 **Local Postgres** runs in Docker on host port **5433** (container `uptime-pg`).
 Start with `docker start uptime-pg`. Demo logins after seeding:
 `demo@uptimehq.app` / `demo1234` (owner), `tech@uptimehq.app` / `demo1234`.
