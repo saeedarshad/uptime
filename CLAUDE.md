@@ -23,9 +23,10 @@ email/password sessions · Tailwind · recharts · `pdf-lib` (no headless Chrome
 npm run dev          # dev server → http://localhost:3000
 npm run build        # prisma generate + next build (standalone)
 npm run typecheck    # tsc --noEmit  (must stay clean; zero `any` in domain code)
-npm test             # Vitest (51 tests: rules, PM, compliance, CSV, tenant isolation)
+npm test             # Vitest (rules, PM, compliance, CSV, tenant isolation, subscription)
 npm run migrate:dev  # create/apply a dev migration
 npm run seed         # reset the demo org "Route 66 Auto Care"
+npm run seed:admin   # create/reset platform admin from ADMIN_EMAIL/ADMIN_PASSWORD
 npm run cron         # run the nightly job once
 ```
 

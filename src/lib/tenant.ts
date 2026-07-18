@@ -145,6 +145,7 @@ export function tenantDb(orgId: string) {
     insight: scopeDelegate(prisma.insight, orgId),
     activityLog: scopeDelegate(prisma.activityLog, orgId),
     invite: scopeDelegate(prisma.invite, orgId),
+    subscriptionPayment: scopeDelegate(prisma.subscriptionPayment, orgId),
   };
 }
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-type StatusTone = "ok" | "warn" | "danger" | "muted" | "info";
+export type StatusTone = "ok" | "warn" | "danger" | "muted" | "info";
 
 const TONE: Record<StatusTone, string> = {
   ok: "bg-ok/10 text-ok ring-ok/20",

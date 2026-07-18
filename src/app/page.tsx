@@ -473,8 +473,14 @@ function Pricing({ loggedIn }: { loggedIn: boolean }) {
               <span className="text-5xl font-black tracking-tight">$49</span>
               <span className="mb-1.5 text-white/50">/ month</span>
             </div>
-            <div className="mt-2 text-sm text-white/60">
-              Billed monthly · cancel anytime
+            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm text-white/80">
+              <span className="font-semibold text-white">or $490 / year</span>
+              <span className="rounded-full bg-ok/20 px-2 py-0.5 text-xs font-semibold text-ok">
+                2 months free
+              </span>
+            </div>
+            <div className="mt-3 text-sm text-white/60">
+              Billed monthly or annually · cancel anytime
             </div>
           </div>
           <div className="p-8">
