@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import type { Organization, User } from "@prisma/client";
 import { prisma } from "./prisma";
 import { newSessionToken } from "./ids";
+import { computeSubscription } from "./subscription";
 
 const SESSION_COOKIE = "uptime_session";
 const SESSION_TTL_DAYS = 30;
@@ -72,10 +73,21 @@ export async function getAuth(): Promise<AuthContext | null> {
   return { user: session.user, org: session.user.org };
 }
 
-/** Guard for authenticated pages/actions; redirects to /login when absent. */
+/**
+ * Guard for authenticated pages/actions. Redirects to `/login` when there is no
+ * session, and to `/locked` when the org's trial/subscription has lapsed. Since
+ * `requireManager()` and virtually every page/action funnel through here, this
+ * is the single choke point that enforces the paywall for both reads and
+ * writes. Screens that must render while locked (the `/locked` page and logout)
+ * use `getAuth()` directly to avoid a redirect loop.
+ */
 export async function requireAuth(): Promise<AuthContext> {
   const auth = await getAuth();
   if (!auth) redirect("/login");
+  // Platform operators bypass the tenant paywall entirely.
+  if (auth.user.isAdmin) return auth;
+  const { accessAllowed } = computeSubscription(auth.org);
+  if (!accessAllowed) redirect("/locked");
   return auth;
 }
 
@@ -83,5 +95,17 @@ export async function requireAuth(): Promise<AuthContext> {
 export async function requireManager(): Promise<AuthContext> {
   const auth = await requireAuth();
   if (auth.user.role === "tech") redirect("/dashboard");
+  return auth;
+}
+
+/**
+ * Guard for the platform operator console (`/admin`). Uses `getAuth()` directly
+ * (not `requireAuth()`) so it is never diverted by the tenant paywall.
+ * Non-admins are bounced to their dashboard; signed-out users to login.
+ */
+export async function requireAdmin(): Promise<AuthContext> {
+  const auth = await getAuth();
+  if (!auth) redirect("/login");
+  if (!auth.user.isAdmin) redirect("/dashboard");
   return auth;
 }

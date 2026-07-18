@@ -104,5 +104,5 @@ export async function loginAction(
     return { error: "Incorrect email or password" };
   }
   await createSession(user.id);
-  redirect("/dashboard");
+  redirect(user.isAdmin ? "/admin" : "/dashboard");
 }

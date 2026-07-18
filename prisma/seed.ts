@@ -46,8 +46,42 @@ async function main() {
       timezone: "America/Chicago",
       laborRateCents: LABOR_RATE,
       plan: "active",
+      currentPeriodEndsAt: daysFromNow(20),
       symptomChips: defaultSymptomChips(businessType),
     },
+  });
+
+  // Three monthly renewals; the latest covers "now" (paid through +20 days).
+  await prisma.subscriptionPayment.createMany({
+    data: [
+      {
+        orgId: org.id,
+        interval: "monthly",
+        amountCents: 4900,
+        periodStart: daysAgo(70),
+        periodEnd: daysAgo(40),
+        paidAt: daysAgo(70),
+        method: "Bank transfer",
+      },
+      {
+        orgId: org.id,
+        interval: "monthly",
+        amountCents: 4900,
+        periodStart: daysAgo(40),
+        periodEnd: daysAgo(10),
+        paidAt: daysAgo(40),
+        method: "Bank transfer",
+      },
+      {
+        orgId: org.id,
+        interval: "monthly",
+        amountCents: 4900,
+        periodStart: daysAgo(10),
+        periodEnd: daysFromNow(20),
+        paidAt: daysAgo(10),
+        method: "Bank transfer",
+      },
+    ],
   });
 
   const owner = await prisma.user.create({
