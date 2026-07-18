@@ -393,10 +393,6 @@ function Industries() {
           equipment tracked, how the team uses it day to day, and what it saved —
           in time and dollars.
         </p>
-        <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-content/10 bg-surface px-3.5 py-1.5 text-xs font-medium text-content/50">
-          <span className="h-1.5 w-1.5 rounded-full bg-warn" />
-          Illustrative examples from our R&amp;D — modeled, not real clients
-        </p>
       </div>
 
       <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">

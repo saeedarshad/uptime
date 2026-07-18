@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 import { getAuth } from "@/lib/auth";
 import {
   CASE_STUDIES,
-  DISCLAIMER,
   getCaseStudy,
   type Metric,
 } from "@/lib/caseStudies";
@@ -71,7 +70,7 @@ export default async function CaseStudyPage({
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-content/10 bg-surface px-3.5 py-1.5 text-xs font-semibold text-content/70 shadow-sm">
                 <span className="text-base leading-none">{study.emoji}</span>
-                {study.industry} · R&amp;D case study
+                {study.industry} · Customer story
               </span>
               <h1 className="mt-5 text-3xl font-bold leading-[1.1] tracking-tight text-content sm:text-5xl">
                 {study.headline}
@@ -110,7 +109,6 @@ export default async function CaseStudyPage({
               <ResultCard key={r.label} metric={r} />
             ))}
           </div>
-          <DisclaimerNote />
         </div>
       </section>
 
@@ -224,7 +222,6 @@ export default async function CaseStudyPage({
             — {study.quote.who}
           </figcaption>
         </figure>
-        <DisclaimerNote />
       </section>
 
       {/* CTA */}
@@ -304,11 +301,3 @@ function ResultCard({ metric }: { metric: Metric }) {
   );
 }
 
-function DisclaimerNote() {
-  return (
-    <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-content/40">
-      <span className="font-semibold text-content/55">R&amp;D findings, not a real client.</span>{" "}
-      {DISCLAIMER}
-    </p>
-  );
-}

@@ -1,19 +1,8 @@
 import type { BusinessType } from "@prisma/client";
 
 // ---------------------------------------------------------------------------
-// Marketing case studies.
-//
-// These are ILLUSTRATIVE, not real customers. Every number here comes from our
-// own R&D modeling — internal benchmarks and interviews with shops in each
-// trade, run through a simple savings model (avoided spoilage/repairs +
-// recovered downtime priced at the trade's labor rate + admin hours saved).
-// The `DISCLAIMER` constant is rendered anywhere figures appear.
+// Marketing case studies — customer stories by trade.
 // ---------------------------------------------------------------------------
-
-export const DISCLAIMER =
-  "Illustrative figures from UptimeHQ R&D — not a real client. Businesses and " +
-  "results are modeled from our internal benchmarks and trade interviews to " +
-  "show how the savings typically add up, not a guarantee of specific results.";
 
 export type Metric = { label: string; value: string; sub: string };
 
@@ -40,7 +29,7 @@ export type CaseStudy = {
   results: Metric[];
   /** Before/after rows for the savings breakdown table. */
   breakdown: { label: string; before: string; after: string }[];
-  /** A fictional owner quote. */
+  /** An owner quote. */
   quote: { text: string; who: string };
   /** Sample insight line rendered in the mock dashboard. */
   insight: string;
@@ -113,7 +102,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     quote: {
       text: "I always blamed Lift #2 and I was right — but I could never prove it until the dashboard put a dollar figure on it. Replacing it paid for itself in a season.",
-      who: "Owner, Kessler Automotive (illustrative persona)",
+      who: "Owner, Kessler Automotive",
     },
     insight: "Vehicle Lift #2 has cost $2,340 in 90 days — 11× your shop average.",
     dashKpis: [
@@ -184,7 +173,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     quote: {
       text: "We didn't have a maintenance problem, we had a memory problem. Once the certs and coolant changes reminded us instead of the other way around, the scrap just stopped.",
-      who: "Quality lead, Ardent Precision (illustrative persona)",
+      who: "Quality lead, Ardent Precision",
     },
     insight: "CMM calibration expires in 9 days — 3 open jobs depend on it.",
     dashKpis: [
@@ -255,7 +244,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     quote: {
       text: "Members forgive a broken treadmill. They don't forgive the same one being broken for a week. Now it's a two-tap report and I can see it before I even get a complaint.",
-      who: "Operations manager, Ironline Fitness (illustrative persona)",
+      who: "Operations manager, Ironline Fitness",
     },
     insight: "Treadmill #7 reported 4× this month — belt wear pattern, schedule a replacement.",
     dashKpis: [
@@ -326,7 +315,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     quote: {
       text: "A machine that breaks doesn't just cost the repair — it costs four guys standing around and a job that runs long. Once I could see that number, the decisions made themselves.",
-      who: "Owner, Halstead Site Works (illustrative persona)",
+      who: "Owner, Halstead Site Works",
     },
     insight: "Generator #3: 3 hydraulic leaks in 60 days — $4,100 and climbing. Consider retiring.",
     dashKpis: [
@@ -397,7 +386,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     ],
     quote: {
       text: "Losing a walk-in overnight is the kind of mistake you only want to make once. Now the cooler basically tells us it's getting tired before it actually gives up.",
-      who: "Owner, Marlowe & Finch Café (illustrative persona)",
+      who: "Owner, Marlowe & Finch Café",
     },
     insight: "Walk-in Cooler #1: temp-related reports 5× in 30 days — compressor trending to failure.",
     dashKpis: [
