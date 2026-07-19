@@ -63,7 +63,14 @@ async function seedProfile(profile: DemoProfile): Promise<string> {
 
   const passwordHash = await bcrypt.hash(password, 10);
   const owner = await prisma.user.create({
-    data: { orgId: org.id, email, name: profile.owner.name, role: "owner", passwordHash },
+    data: {
+      orgId: org.id,
+      email,
+      name: profile.owner.name,
+      role: "owner",
+      passwordHash,
+      emailVerified: new Date(),
+    },
   });
   const tech = await prisma.user.create({
     data: {
@@ -72,6 +79,7 @@ async function seedProfile(profile: DemoProfile): Promise<string> {
       name: profile.tech.name,
       role: "tech",
       passwordHash,
+      emailVerified: new Date(),
     },
   });
 
