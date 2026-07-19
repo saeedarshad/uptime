@@ -56,6 +56,22 @@ npm run dev
 The seed is shaped so all seven insight rules fire and the dashboard shows real
 numbers immediately.
 
+**Per-industry demo clients.** On production/staging startup (and locally via
+`npm run seed:demos`) the app also seeds one fully-populated demo org per
+business type, so you always have an industry-matched account to log into.
+Credentials follow `demo<industry>@uptimehq.app` / `demo<industry>4213`:
+
+| Industry           | Email                          | Password              |
+| ------------------ | ------------------------------ | --------------------- |
+| Auto shop          | `demoauto@uptimehq.app`        | `demoauto4213`        |
+| Machine shop       | `demomachineshop@uptimehq.app` | `demomachineshop4213` |
+| Gym / fitness      | `demogym@uptimehq.app`         | `demogym4213`         |
+| Contractor         | `democontractor@uptimehq.app`  | `democontractor4213`  |
+| Restaurant / cafe  | `demorestaurant@uptimehq.app`  | `demorestaurant4213`  |
+
+Seeding is idempotent (orgs are created only when missing); set `DEMO_RESEED=true`
+to wipe and rebuild them, or `SEED_DEMOS=false` to skip it in production.
+
 ---
 
 ## Environment variables
@@ -68,6 +84,8 @@ numbers immediately.
 | `CRON_SECRET`       | ✅        | Bearer secret guarding `POST /api/jobs/run`.                                |
 | `UPLOAD_DIR`        | ✅        | Directory for uploaded photos/documents (mount a volume in prod).           |
 | `STORAGE_DRIVER`    |          | `local` (default) or `s3` (stubbed for later).                              |
+| `SEED_DEMOS`        |          | Seed per-industry demo orgs on boot. Auto-on in prod; `true`/`false` override. |
+| `DEMO_RESEED`       |          | When `true`, wipe & rebuild the demo orgs instead of skipping existing ones.   |
 | `SMTP_HOST`         |          | SMTP server. **If unset, all email no-ops and logs to the console.**        |
 | `SMTP_PORT`         |          | Default `587` (`465` implies TLS).                                          |
 | `SMTP_USER`/`PASS`  |          | SMTP credentials.                                                           |

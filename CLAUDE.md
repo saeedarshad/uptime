@@ -26,6 +26,7 @@ npm run typecheck    # tsc --noEmit  (must stay clean; zero `any` in domain code
 npm test             # Vitest (rules, PM, compliance, CSV, tenant isolation, subscription)
 npm run migrate:dev  # create/apply a dev migration
 npm run seed         # reset the demo org "Route 66 Auto Care"
+npm run seed:demos   # seed one demo org per business type (idempotent; DEMO_RESEED=true to rebuild)
 npm run seed:admin   # create/reset platform admin from ADMIN_EMAIL/ADMIN_PASSWORD
 npm run cron         # run the nightly job once
 ```
