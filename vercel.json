@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "prisma generate && prisma migrate deploy && next build",
+  "buildCommand": "prisma generate && prisma migrate deploy && (tsx scripts/seed-demos.ts || echo '[build] demo seed skipped') && next build",
   "crons": [
     { "path": "/api/jobs/run", "schedule": "0 8 * * *" }
   ]
