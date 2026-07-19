@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import { runNightlyJob } from "@/lib/jobs";
 
-// Triggers the nightly job on demand. Guard with CRON_SECRET so it can't be
-// invoked by the public. Accepts `Authorization: Bearer <secret>` or
-// `x-cron-secret: <secret>`.
-export async function POST(req: Request) {
+// Triggers the nightly job. Guarded with CRON_SECRET so it can't be invoked by
+// the public. Accepts `Authorization: Bearer <secret>` or `x-cron-secret`.
+// POST is for manual/external triggers; GET is what Vercel Cron invokes (it
+// sends `Authorization: Bearer $CRON_SECRET` automatically when the env var is
+// set — see vercel.json).
+async function handle(req: Request) {
   const secret = process.env.CRON_SECRET;
   if (!secret) {
     return NextResponse.json(
@@ -22,3 +24,6 @@ export async function POST(req: Request) {
   const result = await runNightlyJob();
   return NextResponse.json({ ok: true, ...result });
 }
+
+export const POST = handle;
+export const GET = handle;
