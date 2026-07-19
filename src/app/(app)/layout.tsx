@@ -3,6 +3,7 @@ import { requireAuth } from "@/lib/auth";
 import { Sidebar, MobileTabs } from "@/components/Nav";
 import { UserMenu } from "@/components/UserMenu";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { VerifyEmailBanner } from "@/components/VerifyEmailBanner";
 import { computeSubscription } from "@/lib/subscription";
 import { formatDate } from "@/lib/format";
 
@@ -57,6 +58,10 @@ export default async function AppLayout({
             />
           </div>
         </header>
+
+        {!user.emailVerified && !user.isAdmin && (
+          <VerifyEmailBanner email={user.email} />
+        )}
 
         {trialEndingSoon && (
           <div className="border-b border-warn/20 bg-warn/[0.08] px-4 py-2.5 text-sm text-warn md:px-8">

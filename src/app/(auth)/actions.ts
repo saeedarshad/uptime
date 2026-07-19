@@ -7,6 +7,10 @@ import { prisma } from "@/lib/prisma";
 import { hashPassword, verifyPassword, createSession } from "@/lib/auth";
 import { uniqueOrgSlug } from "@/lib/slug";
 import { defaultSymptomChips } from "@/lib/businessTypes";
+import { createAuthToken, consumeAuthToken } from "@/lib/tokens";
+import { sendEmail } from "@/lib/email";
+import { verifyEmail, passwordReset } from "@/lib/emailTemplates";
+import { appUrl } from "@/lib/qr";
 
 export interface FormState {
   error?: string;
@@ -78,6 +82,12 @@ export async function registerAction(
     });
   });
 
+  // Fire off the verification email (soft — the user is signed in regardless;
+  // an app-shell banner nags until they confirm).
+  const token = await createAuthToken(user.id, "email_verify");
+  const mail = verifyEmail(user.name, `${appUrl()}/verify-email/${token}`);
+  await sendEmail({ to: user.email, ...mail });
+
   await createSession(user.id);
   redirect("/dashboard");
 }
@@ -105,4 +115,65 @@ export async function loginAction(
   }
   await createSession(user.id);
   redirect(user.isAdmin ? "/admin" : "/dashboard");
+}
+
+const forgotSchema = z.object({
+  email: z.string().email("Enter a valid email"),
+});
+
+/**
+ * Start a password reset. Always reports success (even for unknown emails) so
+ * the form can't be used to enumerate accounts. Only sends mail if a user
+ * actually exists.
+ */
+export async function forgotPasswordAction(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState & { ok?: boolean }> {
+  const parsed = forgotSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+  }
+  const email = parsed.data.email.toLowerCase().trim();
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (user) {
+    const token = await createAuthToken(user.id, "password_reset");
+    const mail = passwordReset(
+      user.name,
+      `${appUrl()}/reset-password/${token}`,
+    );
+    await sendEmail({ to: user.email, ...mail });
+  }
+  return { ok: true };
+}
+
+const resetSchema = z.object({
+  token: z.string().min(1),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
+
+/**
+ * Complete a password reset: consume the token, set the new password, revoke
+ * all existing sessions (in case the account was compromised), then sign the
+ * user in fresh.
+ */
+export async function resetPasswordAction(
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  const parsed = resetSchema.safeParse(Object.fromEntries(formData));
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+  }
+  const userId = await consumeAuthToken(parsed.data.token, "password_reset");
+  if (!userId) {
+    return { error: "This reset link is invalid or has expired." };
+  }
+  await prisma.user.update({
+    where: { id: userId },
+    data: { passwordHash: await hashPassword(parsed.data.password) },
+  });
+  await prisma.session.deleteMany({ where: { userId } });
+  await createSession(userId);
+  redirect("/dashboard");
 }

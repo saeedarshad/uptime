@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   computeSubscription,
+  dueExpiryReminder,
   priceForInterval,
   PRICING,
   type SubscriptionInput,
@@ -91,6 +92,24 @@ describe("computeSubscription", () => {
     );
     expect(s.status).toBe("expired");
     expect(s.accessAllowed).toBe(false);
+  });
+});
+
+describe("dueExpiryReminder", () => {
+  it("fires exactly on the 3- and 1-day thresholds", () => {
+    expect(dueExpiryReminder(3)).toBe(3);
+    expect(dueExpiryReminder(1)).toBe(1);
+  });
+
+  it("does not fire on off-threshold days", () => {
+    expect(dueExpiryReminder(4)).toBeNull();
+    expect(dueExpiryReminder(2)).toBeNull();
+  });
+
+  it("does not fire once access has lapsed or is unknown", () => {
+    expect(dueExpiryReminder(0)).toBeNull();
+    expect(dueExpiryReminder(-1)).toBeNull();
+    expect(dueExpiryReminder(null)).toBeNull();
   });
 });
 

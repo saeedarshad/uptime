@@ -118,6 +118,7 @@ model Organization {
   activityLogs   ActivityLog[]
   invites        Invite[]
   subscriptionPayments SubscriptionPayment[]
+  subscriptionReminders SubscriptionReminder[]
 }
 
 model User {
@@ -130,14 +131,39 @@ model User {
   // Platform operator flag — grants access to the /admin subscriptions console.
   // Bootstrapped for admin@uptimehq.app via migration; toggled only in DB.
   isAdmin      Boolean  @default(false)
+  // Null until the user confirms their email via a verification link.
+  emailVerified DateTime?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   org             Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
   sessions        Session[]
+  authTokens      AuthToken[]
   assignedWOs     WorkOrder[]  @relation("AssignedTo")
 
   @@index([orgId])
+}
+
+// Single-use, hashed-at-rest tokens for email verification and password reset.
+// The raw token travels in the emailed URL; only its sha256 is stored here
+// (mirrors Session.tokenHash).
+model AuthToken {
+  id         String        @id @default(cuid())
+  userId     String
+  type       AuthTokenType
+  tokenHash  String        @unique
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime      @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+enum AuthTokenType {
+  email_verify
+  password_reset
 }
 
 model Session {
@@ -360,6 +386,22 @@ model SubscriptionPayment {
 
   org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
+  @@index([orgId])
+}
+
+// Idempotency ledger for access-expiry reminder emails: one row per
+// (org, access-lapse date, threshold-in-days) so the nightly job sends each
+// reminder exactly once even across repeated/duplicate runs.
+model SubscriptionReminder {
+  id        String   @id @default(cuid())
+  orgId     String
+  endsAt    DateTime
+  threshold Int
+  sentAt    DateTime @default(now())
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@unique([orgId, endsAt, threshold])
   @@index([orgId])
 }
 

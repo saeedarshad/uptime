@@ -2,7 +2,9 @@ import { prisma } from "./prisma";
 import { nextOccurrence, type ScheduleInput } from "./pm";
 import { recomputeInsights } from "./insights";
 import { sendMonthlyOwnerEmail } from "./monthlyEmail";
-import { sendEmail } from "./email";
+import { sendEmailToMany } from "./email";
+import { computeSubscription, dueExpiryReminder } from "./subscription";
+import { expiryReminder } from "./emailTemplates";
 import { appUrl } from "./qr";
 import { formatDate } from "./format";
 
@@ -175,15 +177,61 @@ async function sendDigestForOrg(orgId: string): Promise<void> {
     <p><a href="${appUrl()}/dashboard">Open your dashboard</a></p>
     <p style="color:#888;font-size:12px">${formatDate(new Date(), org.timezone)}</p>
   `;
-  await Promise.all(
-    managers.map((m) =>
-      sendEmail({
-        to: m.email,
-        subject: `UptimeHQ · ${overdue + openHighWo} item(s) need attention`,
-        html,
-      }),
-    ),
+  await sendEmailToMany(
+    managers.map((m) => m.email),
+    {
+      subject: `UptimeHQ · ${overdue + openHighWo} item(s) need attention`,
+      html,
+    },
   );
+}
+
+/**
+ * Access-expiry reminders: 3 and 1 day(s) before a trial or paid period lapses,
+ * email owners/admins. The `SubscriptionReminder` unique constraint makes this
+ * idempotent — a second run the same day (or a retried cron) sends nothing.
+ * Returns the number of reminder emails newly sent.
+ */
+async function sendExpiryRemindersForOrg(
+  orgId: string,
+  now: Date,
+): Promise<number> {
+  const org = await prisma.organization.findUnique({ where: { id: orgId } });
+  if (!org) return 0;
+
+  const state = computeSubscription(org, now);
+  if (!state.accessAllowed || state.endsAt === null) return 0;
+
+  const threshold = dueExpiryReminder(state.daysRemaining);
+  if (threshold === null) return 0;
+
+  // Claim the (org, endsAt, threshold) slot; a duplicate throws on the unique
+  // index, which means the reminder already went out — skip silently.
+  try {
+    await prisma.subscriptionReminder.create({
+      data: { orgId, endsAt: state.endsAt, threshold },
+    });
+  } catch {
+    return 0;
+  }
+
+  const managers = await prisma.user.findMany({
+    where: { orgId, role: { in: ["owner", "admin"] } },
+    select: { email: true },
+  });
+  const onTrial = state.status === "trialing";
+  const { subject, html, text } = expiryReminder(
+    org.name,
+    state.endsAt,
+    org.timezone,
+    threshold,
+    onTrial,
+  );
+  await sendEmailToMany(
+    managers.map((m) => m.email),
+    { subject, html, text },
+  );
+  return 1;
 }
 
 /**
@@ -197,22 +245,25 @@ export async function runNightlyJob(
   pmCreated: number;
   pmUpdated: number;
   monthlyEmails: number;
+  expiryReminders: number;
 }> {
   const orgs = await prisma.organization.findMany({ select: { id: true } });
   const isFirstOfMonth = now.getUTCDate() === 1;
   let pmCreated = 0;
   let pmUpdated = 0;
   let monthlyEmails = 0;
+  let expiryReminders = 0;
   for (const { id } of orgs) {
     const { created, updated } = await syncPmTasksForOrg(id, now);
     pmCreated += created;
     pmUpdated += updated;
     await recomputeInsights(id, now);
     await sendDigestForOrg(id);
+    expiryReminders += await sendExpiryRemindersForOrg(id, now);
     if (isFirstOfMonth) {
       await sendMonthlyOwnerEmail(id, now);
       monthlyEmails += 1;
     }
   }
-  return { orgs: orgs.length, pmCreated, pmUpdated, monthlyEmails };
+  return { orgs: orgs.length, pmCreated, pmUpdated, monthlyEmails, expiryReminders };
 }

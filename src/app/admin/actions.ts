@@ -7,6 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin, hashPassword, verifyPassword } from "@/lib/auth";
 import { syncOrgSubscription } from "@/lib/subscription";
 import { dollarsToCents } from "@/lib/format";
+import { sendEmailToMany } from "@/lib/email";
+import { renewalConfirmation } from "@/lib/emailTemplates";
 
 export interface AdminState {
   error?: string;
@@ -61,6 +63,29 @@ export async function recordPayment(
     },
   });
   await syncOrgSubscription(d.orgId);
+
+  // Confirm the payment to the org's owners/admins. Non-blocking.
+  const org = await prisma.organization.findUnique({
+    where: { id: d.orgId },
+    select: { name: true, timezone: true },
+  });
+  if (org) {
+    const managers = await prisma.user.findMany({
+      where: { orgId: d.orgId, role: { in: ["owner", "admin"] } },
+      select: { email: true },
+    });
+    const { subject, html, text } = renewalConfirmation(
+      org.name,
+      amountCents,
+      new Date(d.periodEnd),
+      org.timezone,
+    );
+    await sendEmailToMany(
+      managers.map((m) => m.email),
+      { subject, html, text },
+    );
+  }
+
   revalidatePath(`/admin/orgs/${d.orgId}`);
   revalidatePath("/admin");
   return { ok: true, message: "Payment recorded" };

@@ -91,6 +91,7 @@ async function main() {
       name: "Dale Cooper",
       role: "owner",
       passwordHash: await bcrypt.hash("demo1234", 10),
+      emailVerified: new Date(),
     },
   });
   const tech = await prisma.user.create({
@@ -100,6 +101,7 @@ async function main() {
       name: "Harry Truman",
       role: "tech",
       passwordHash: await bcrypt.hash("demo1234", 10),
+      emailVerified: new Date(),
     },
   });
 

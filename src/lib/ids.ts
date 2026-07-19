@@ -22,3 +22,8 @@ export function newSessionToken(): string {
 export function newInviteToken(): string {
   return tokenNano();
 }
+
+// Single-use email-verification / password-reset token (hashed at rest).
+export function newAuthToken(): string {
+  return tokenNano();
+}

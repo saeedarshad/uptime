@@ -9,6 +9,9 @@ import { prisma } from "@/lib/prisma";
 import { dollarsToCents } from "@/lib/format";
 import { newInviteToken } from "@/lib/ids";
 import { logActivity } from "@/lib/activity";
+import { sendEmail } from "@/lib/email";
+import { inviteEmail } from "@/lib/emailTemplates";
+import { appUrl } from "@/lib/qr";
 
 export interface SettingsState {
   error?: string;
@@ -120,7 +123,7 @@ export async function inviteUser(
   if (existing) {
     return { error: "That email is already in use" };
   }
-  await tenantDb(org.id).invite.create({
+  const invite = await tenantDb(org.id).invite.create({
     data: {
       email,
       name: parsed.data.name,
@@ -128,6 +131,14 @@ export async function inviteUser(
       token: newInviteToken(),
     },
   });
+  // Email the invite link (the copy-link fallback in settings stays for cases
+  // where mail isn't configured). Non-blocking: sendEmail never throws.
+  const { subject, html, text } = inviteEmail(
+    parsed.data.name,
+    org.name,
+    `${appUrl()}/invite/${invite.token}`,
+  );
+  await sendEmail({ to: email, subject, html, text });
   await logActivity({
     orgId: org.id,
     actorName: user.name,

@@ -95,6 +95,27 @@ export function computeSubscription(
   };
 }
 
+/** Day thresholds (before access lapses) at which we email a reminder. */
+export const EXPIRY_REMINDER_THRESHOLDS = [3, 1] as const;
+
+export type ExpiryReminderThreshold =
+  (typeof EXPIRY_REMINDER_THRESHOLDS)[number];
+
+/**
+ * Pure: given whole days until access lapses, return the reminder threshold to
+ * send today, or null. The nightly job runs once/day so `daysRemaining` steps
+ * 3 → 2 → 1; we fire on exactly 3 and 1. Never fires once access has lapsed
+ * (`daysRemaining` null or <= 0).
+ */
+export function dueExpiryReminder(
+  daysRemaining: number | null,
+): ExpiryReminderThreshold | null {
+  if (daysRemaining === null) return null;
+  return (
+    EXPIRY_REMINDER_THRESHOLDS.find((t) => t === daysRemaining) ?? null
+  );
+}
+
 /**
  * DB sibling (not pure): after a payment is recorded, voided, or trial changed,
  * recompute `currentPeriodEndsAt` from the surviving (non-voided) payments and

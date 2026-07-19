@@ -1,6 +1,6 @@
 import { prisma } from "./prisma";
 import { computeCompliance } from "./pm";
-import { sendEmail } from "./email";
+import { sendEmailToMany } from "./email";
 import { appUrl } from "./qr";
 import { formatMoney, formatHours } from "./format";
 
@@ -149,13 +149,11 @@ export async function sendMonthlyOwnerEmail(
     select: { email: true },
   });
   const html = renderHtml(report);
-  await Promise.all(
-    managers.map((m) =>
-      sendEmail({
-        to: m.email,
-        subject: `${report.orgName} · ${report.reportLabel} maintenance summary`,
-        html,
-      }),
-    ),
+  await sendEmailToMany(
+    managers.map((m) => m.email),
+    {
+      subject: `${report.orgName} · ${report.reportLabel} maintenance summary`,
+      html,
+    },
   );
 }

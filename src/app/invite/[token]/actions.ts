@@ -44,6 +44,8 @@ export async function acceptInvite(
         name: invite.name,
         role: invite.role,
         passwordHash: await hashPassword(parsed.data.password),
+        // Accepting an emailed invite proves control of the address.
+        emailVerified: new Date(),
       },
     });
     await tx.invite.update({
