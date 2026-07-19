@@ -36,7 +36,9 @@ const SEVERITY_STYLE: Record<
   },
 };
 
-function actionLink(insight: Insight): { href: string; label: string } | null {
+function actionLink(
+  insight: Insight,
+): { href: string; label: string; newTab?: boolean } | null {
   switch (insight.actionType) {
     case "create_wo":
       return {
@@ -49,7 +51,11 @@ function actionLink(insight: Insight): { href: string; label: string } | null {
       return { href: "/schedule", label: "View schedule" };
     case "export_pdf":
       return insight.assetId
-        ? { href: `/assets/${insight.assetId}/export.pdf`, label: "Export PDF" }
+        ? {
+            href: `/assets/${insight.assetId}/export.pdf`,
+            label: "Export PDF",
+            newTab: true,
+          }
         : null;
     default:
       return null;
@@ -139,7 +145,12 @@ export default async function InsightsPage() {
                     </p>
                     <div className="mt-4 flex items-center gap-2">
                       {action && (
-                        <Link href={action.href} className="btn-primary">
+                        <Link
+                          href={action.href}
+                          className="btn-primary"
+                          target={action.newTab ? "_blank" : undefined}
+                          rel={action.newTab ? "noreferrer" : undefined}
+                        >
                           {action.label}
                         </Link>
                       )}
